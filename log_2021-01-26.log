@@ -1,0 +1,4 @@
+{"caller":"sim-backend/extension/gorm.go:14","level":"info","msg":"MySQL starting...","time":"2021-01-26 13:30:45"}
+{"caller":"sim-backend/main.go:9","level":"info","msg":"initializing....","time":"2021-01-26 13:57:23"}
+{"caller":"sim-backend/main.go:9","level":"info","msg":"initializing....","time":"2021-01-26 14:02:59"}
+{"caller":"sim-backend/main.go:9","level":"info","msg":"initializing....","time":"2021-01-26 14:03:21"}
