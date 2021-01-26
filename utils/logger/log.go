@@ -1,34 +1,18 @@
 package logger
 
 import (
-	//"context"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/go-stack/stack"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
-	//"github.com/lestrrat/go-file-rotatelogs"
-	//"github.com/olivere/elastic"
-	//"github.com/pkg/errors"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
-	//"gopkg.in/sohlich/elogrus.v3"
-	"os"
-	"sim-backend/constant"
-	"time"
-)
-
-// 定义键名
-const (
-	TraceIDKey     = "trace_id"
-	UserIDKey      = "user_id"
-	VersionKey     = "version"
-	ServiceNameKey = "service_name"
 )
 
 var logger *logrus.Logger
 
-// debug: 使用text格式, Level是Debug, 打印所有级别
-// not debug: 使用json格式, level是Info, 不打印Debug级别
 func SetDebug(d bool) {
 	if d {
 		format := new(logrus.TextFormatter)
@@ -43,46 +27,6 @@ func SetDebug(d bool) {
 		logger.Formatter = format
 	}
 }
-
-func WithField(key string, value interface{}) *logrus.Entry {
-	return withCaller(2).WithField(key, value)
-}
-
-func WithFields(fs logrus.Fields) *logrus.Entry {
-	return withCaller(2).WithFields(fs)
-}
-
-//todo 加入traceId 和 uid 日志染色追踪
-//func StartSpan(ctx context.Context, ) *logrus.Entry {
-//	if ctx == nil {
-//		ctx = context.Background()
-//	}
-//	fields := map[string]interface{}{
-//		UserIDKey:       fromUserIDContext(ctx),
-//		TraceIDKey:      fromTraceIDContext(ctx),
-//		VersionKey:      viper.GetString("server.version"),
-//		ServiceNameKey:   viper.GetString("server.name"),
-//	}
-//	return  logger.WithFields(fields)
-//}
-//func fromUserIDContext(ctx context.Context) string {
-//	v := ctx.Value(UserIDKey)
-//	if v != nil {
-//		if s, ok := v.(string); ok {
-//			return s
-//		}
-//	}
-//	return ""
-//}
-//func fromTraceIDContext(ctx context.Context) string {
-//	v := ctx.Value(TraceIDKey)
-//	if v != nil {
-//		if s, ok := v.(string); ok {
-//			return s
-//		}
-//	}
-//	return ""
-//}
 
 func withCaller(skip int) *logrus.Entry {
 	var key = "caller"
@@ -140,22 +84,6 @@ func Debugf(format string, args ...interface{}) {
 	withCaller(2).Debugf(format, args...)
 }
 
-// 输出日志到es
-//func configESLogger(esUrl string, esHOst string, index string) {
-//	client, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(esUrl))
-//	if err != nil {
-//		logger.Errorf("config es logger error. %+v", errors.WithStack(err))
-//		return
-//	}
-//	esHook, err := elogrus.NewElasticHook(client, esHOst, logrus.DebugLevel, index)
-//	if err != nil {
-//		logger.Errorf("config es logger error. %+v", errors.WithStack(err))
-//		return
-//	}
-//
-//	logger.AddHook(esHook)
-//}
-
 //输出日志到文件
 func configFileLogger(logPrefix string) {
 	logWriter, _ := rotatelogs.New(
@@ -167,7 +95,7 @@ func configFileLogger(logPrefix string) {
 		logrus.InfoLevel: logWriter,
 		//logrus.FatalLevel: logWriter, //错误输出到另一个日志
 	}
-	lfHook := lfshook.NewHook(writeMap, &logrus.JSONFormatter{TimestampFormat: constant.TIME_FORMAT})
+	lfHook := lfshook.NewHook(writeMap, &logrus.JSONFormatter{TimestampFormat: "2006-01-02 15:04:05"})
 
 	logger.AddHook(lfHook)
 }
@@ -177,9 +105,9 @@ func init() {
 		Out:       os.Stdout,
 		Formatter: nil,
 		Hooks:     make(logrus.LevelHooks),
-		Level:     logrus.InfoLevel,
+		Level:     0,
 	}
-	configFileLogger("log")
-	SetDebug(viper.GetBool("debug"))
+	SetDebug(true)
 	//ConfigESLogger("http://localhost:9200","localhost","mylog")
+	//configFileLogger("api")
 }
