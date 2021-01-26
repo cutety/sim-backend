@@ -1,9 +1,14 @@
 package main
 
 import (
-	"sim-backend/utils/logger"
+	"sim-backend/extension"
+	"sim-backend/routes"
+	"sim-backend/utils/viper"
 )
 
 func main() {
-	logger.Info("123")
+	viper.InitViper()
+	extension.InitDB()
+	routes.InitRouter()
+
 }

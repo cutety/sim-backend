@@ -8,9 +8,12 @@ import (
 	"sim-backend/utils/logger"
 )
 
-var db *gorm.DB
+var DB *gorm.DB
 
-func init() {
+
+
+
+func InitDB() {
 	logger.Info("MySQL starting...")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		viper.GetString("extensions.mysql.username"),
@@ -19,19 +22,18 @@ func init() {
 		viper.GetString("extensions.mysql.port"),
 		viper.GetString("extensions.mysql.db"),
 	)
+	logger.Info(dsn)
 	db, err := gorm.Open("mysql", dsn)
 	if err != nil {
 		panic(err)
 	}
-	db.SingularTable(true)
+	db.SingularTable(false)
 	db.LogMode(true)
 	db.SetLogger(logger.NewGormLogger())
 	db.DB().SetMaxIdleConns(50)
 	db.DB().SetMaxOpenConns(200)
 
+	DB = db
 	logger.Info("MySQL is sucessfully connected")
 }
 
-func GetDb() *gorm.DB {
-	return db
-}

@@ -7,7 +7,7 @@ type GormLoggerI struct{}
 func (*GormLoggerI) Print(v ...interface{}) {
 	format := v[0].(string)
 	caller := v[1].(string)
-	v = v[3:]
+	v = v[2:]
 
 	logger.WithFields(logrus.Fields{"caller": caller}).Infof(format+"%v", v)
 }
