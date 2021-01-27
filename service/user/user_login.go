@@ -7,20 +7,20 @@ import (
 	"sim-backend/utils/logger"
 )
 
-type UserLoginService struct {
+type LoginService struct {
 	UserID string `form:"user_id" json:"user_id"`
 	Password string `form:"password" json:"password"`
 }
 
-func (service *UserLoginService) Login() common.Response {
+func (service *LoginService) Login() common.Response {
 	logger.Info(service.UserID[len(service.UserID) - 6:])
 	user, err := models.MUser.GetUserByUserID(service.UserID)
 	if err != nil || user == nil{
-		return common.Response{Msg: "账号不存在"}
+		return utils.ResponseWithError(utils.ERROR_USER_EXIST, err)
 	}
 
 	if !utils.DecodePsw(user.Password, service.Password) {
-		return common.Response{Msg: "密码不正确"}
+		return utils.ResponseWithError(utils.ERROR_PASSWORD_WRONG, err)
 	}
-	return common.Response{Msg: "登陆成功"}
+	return utils.Response(utils.SUCCESS, nil)
 }

@@ -10,5 +10,4 @@ func main() {
 	viper.InitViper()
 	extension.InitDB()
 	routes.InitRouter()
-
 }

@@ -14,10 +14,10 @@ func (*InitUserPswService) InitUserPsw() error {
 	}
 	go func() {
 		for i:= 1; i <= *total; i ++ {
-			user, _ := models.MUser.GetUserByID(i)
+			user, _ := models.MUser.GetUserByID(uint(i))
 			psw := user.UserID[len(user.UserID) - 6:]
 			encodedPsw := utils.ScryptPsw(psw)
-			_ = models.MUser.UpdatePasswordById(int(user.ID), encodedPsw)
+			_ = models.MUser.UpdatePasswordById(user.ID, encodedPsw)
 		}
 	}()
 	return nil

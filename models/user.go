@@ -28,7 +28,7 @@ func (*User) GetUserByUserID(userID string) (*User, error) {
 	return user, err
 }
 
-func (*User) GetUserByID(id int) (*User, error) {
+func (*User) GetUserByID(id uint) (*User, error) {
 	user := &User{}
 	err := extension.DB.Where("id = ?", id).Find(&user).Error
 	if err == gorm.ErrRecordNotFound {
@@ -37,7 +37,7 @@ func (*User) GetUserByID(id int) (*User, error) {
 	return user, err
 }
 
-func (*User) UpdatePasswordById(id int, password string) error {
+func (*User) UpdatePasswordById(id uint, password string) error {
 	return extension.DB.Table(MUser.TableName()).Where("id = ?", id).Update("password", password).Error
 }
 

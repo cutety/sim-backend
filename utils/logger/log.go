@@ -109,5 +109,5 @@ func init() {
 	}
 	SetDebug(true)
 	//ConfigESLogger("http://localhost:9200","localhost","mylog")
-	//configFileLogger("api")
+	configFileLogger("log")
 }
