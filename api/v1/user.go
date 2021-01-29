@@ -47,11 +47,14 @@ func Login(c *gin.Context) {
 	var res common.Response
 	if response.Status == utils.SUCCESS {
 		token, res = middlewire.SetToken(service.UserID)
+		c.JSON(200, common.LoginResponse{
+			Status: res.Status,
+			Msg:    res.Msg,
+			Error:  res.Msg,
+			Token:  token,
+		})
+	} else {
+		c.JSON(200, response)
 	}
-	c.JSON(200, common.LoginResponse{
-		Status: res.Status,
-		Msg:    res.Msg,
-		Error:  res.Msg,
-		Token:  token,
-	})
+
 }

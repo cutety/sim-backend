@@ -4,7 +4,6 @@ import (
 	"sim-backend/models"
 	"sim-backend/models/common"
 	"sim-backend/utils"
-	"sim-backend/utils/logger"
 )
 
 type LoginService struct {
@@ -13,14 +12,12 @@ type LoginService struct {
 }
 
 func (service *LoginService) Login() common.Response {
-	logger.Info(service.UserID[len(service.UserID) - 6:])
 	user, err := models.MUser.GetUserByUserID(service.UserID)
 	if err != nil || user == nil{
 		return utils.ResponseWithError(utils.ERROR_USER_EXIST, err)
 	}
-
 	if !utils.DecodePsw(user.Password, service.Password) {
-		return utils.ResponseWithError(utils.ERROR_PASSWORD_WRONG, err)
+		return utils.Response(utils.ERROR_PASSWORD_WRONG, nil)
 	}
 	return utils.Response(utils.SUCCESS, nil)
 }

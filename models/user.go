@@ -3,16 +3,20 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"sim-backend/extension"
+	"time"
 )
 
 var MUser User
 
 type User struct {
-	gorm.Model
+	ID        uint `gorm:"primary_key"`
 	UserID string `gorm:"column:user_id;type:varchar(20)" json:"user_id"`
 	UserName string `gorm:"column:username;type:varchar(20)" json:"username"`
 	Password string `gorm:"column:password;type:varchar(20)" json:"password"`
 	Role string `gorm:"column:role;type:int;DEFAULT:2" json:"role"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `sql:"index"`
 }
 
 func (*User) TableName() string {
@@ -21,9 +25,12 @@ func (*User) TableName() string {
 
 func (*User) GetUserByUserID(userID string) (*User, error) {
 	user := &User{}
-	err := extension.DB.Where("user_id = ?", userID).Find(&user).Error
+	err := extension.DB.Where("user_id = ?", userID).First(&user).Error
 	if err == gorm.ErrRecordNotFound {
-		return &User{}, nil
+		return &User{}, err
+	}
+	if err != nil {
+		return nil, err
 	}
 	return user, err
 }
