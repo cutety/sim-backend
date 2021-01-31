@@ -66,37 +66,42 @@ func CheckToken(token string) (*JwtClaims, int) {
 	return nil, utils.ERROR_TOKEN_WRONG
 }
 
+func GetTokenFromRequestHeader(c *gin.Context) string {
+	tokenHeader := c.Request.Header.Get("Authorization")
+	if tokenHeader == "" {
+		c.JSON(200, utils.Response(utils.ERROR_TOKEN_EXIST, nil))
+		c.Abort()
+		return ""
+	}
+
+	token := strings.Split(tokenHeader, " ")
+	if len(token) == 0 {
+		c.JSON(200, utils.Response(utils.ERROR_TOKEN_TYPE_WRONG, nil))
+		c.Abort()
+		return ""
+	}
+
+	if len(token) != 2 && token[0] != "Bearer" {
+		c.JSON(200, utils.Response(utils.ERROR_TOKEN_TYPE_WRONG, nil))
+		c.Abort()
+		return ""
+	}
+	return token[1]
+}
+
 func JwtToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		tokenHeader := c.Request.Header.Get("Authorization")
-		if tokenHeader == "" {
-			c.JSON(200, utils.Response(utils.ERROR_TOKEN_EXIST, nil))
-			c.Abort()
-			return
+		token := GetTokenFromRequestHeader(c)
+		if token != "" {
+			key, code := CheckToken(token)
+			if code != utils.SUCCESS {
+				c.JSON(200, utils.Response(code, nil))
+				c.Abort()
+				return
+			}
+			c.Set("user_id", key)
+			c.Next()
 		}
-
-		checkToken := strings.Split(tokenHeader, " ")
-		if len(checkToken) == 0 {
-			c.JSON(200, utils.Response(utils.ERROR_TOKEN_TYPE_WRONG, nil))
-			c.Abort()
-			return
-		}
-
-		if len(checkToken) != 2 && checkToken[0] != "Bearer" {
-			c.JSON(200, utils.Response(utils.ERROR_TOKEN_TYPE_WRONG, nil))
-			c.Abort()
-			return
-		}
-
-		key, code := CheckToken(checkToken[1])
-		if code != utils.SUCCESS {
-			c.JSON(200, utils.Response(code, nil))
-			c.Abort()
-			return
-		}
-
-		c.Set("user_id", key)
-		c.Next()
 	}
 }
 

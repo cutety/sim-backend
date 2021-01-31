@@ -17,9 +17,9 @@ type Application struct {
 	AdmissionSchool string `gorm:"column:admission_shcool;type:varchar(255)" json:"admission_shcool" validate:"required" label:"录取院校"`
 	AdmissionMajor string `gorm:"column:admission_major;type:varchar(255)" json:"admission_major" validate:"required" label:"录取院校"`
 	IsAdmitted bool `gorm:"column:is_admitted;type:tinyint(1)" json:"is_admitted" label:"录取结果"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
+	CreatedAt time.Time `gorm:"type:timestamp"`
+	UpdatedAt time.Time `gorm:"type:timestamp"`
+	DeletedAt *time.Time `sql:"index" gorm:"type:timestamp"`
 }
 
 

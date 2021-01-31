@@ -14,9 +14,9 @@ type User struct {
 	UserName string `gorm:"column:username;type:varchar(20)" json:"username"`
 	Password string `gorm:"column:password;type:varchar(20)" json:"password"`
 	Role int `gorm:"column:role;type:int;DEFAULT:2" json:"role"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
+	CreatedAt time.Time `gorm:"type:timestamp"`
+	UpdatedAt time.Time `gorm:"type:timestamp"`
+	DeletedAt *time.Time `sql:"index" gorm:"type:timestamp"`
 }
 
 func (*User) TableName() string {

@@ -9,9 +9,9 @@ var MMentor Mentor
 
 type Mentor struct {
 	ID        uint `gorm:"primary_key"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
+	CreatedAt time.Time `gorm:"type:timestamp"`
+	UpdatedAt time.Time `gorm:"type:timestamp"`
+	DeletedAt *time.Time `sql:"index" gorm:"type:timestamp"`
 	UserID string `gorm:"column:user_id;type:varchar(20)" json:"user_id" validate:"required" label:"用户ID"`
 	Name string `gorm:"column:name;type:varchar(20)" json:"name" validate:"required" label:"姓名"`
 	Gender string `gorm:"column:gender;type:int(1);not null;default:1" json:"gender"`
