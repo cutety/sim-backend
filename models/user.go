@@ -13,7 +13,7 @@ type User struct {
 	UserID string `gorm:"column:user_id;type:varchar(20)" json:"user_id"`
 	UserName string `gorm:"column:username;type:varchar(20)" json:"username"`
 	Password string `gorm:"column:password;type:varchar(20)" json:"password"`
-	Role string `gorm:"column:role;type:int;DEFAULT:2" json:"role"`
+	Role int `gorm:"column:role;type:int;DEFAULT:2" json:"role"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt *time.Time `sql:"index"`

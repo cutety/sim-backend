@@ -1,6 +1,7 @@
 package middlewire
 
 import (
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -14,13 +15,15 @@ var JwtKey = []byte(viper.GetString("server.jwtKey"))
 
 type JwtClaims struct {
 	UserID string `json:"user_id"`
+	Role int `json:"role"`
 	jwt.StandardClaims
 }
 
-func SetToken(userID string) (string, common.Response) {
+func SetToken(userID string, role int) (string, common.Response) {
 	expiresAt := time.Now().Add(7*24*time.Hour)
 	SetClaims := JwtClaims{
 		userID,
+		role,
 		jwt.StandardClaims{
 			ExpiresAt: expiresAt.Unix(),
 			Issuer:    "sim",
@@ -95,4 +98,32 @@ func JwtToken() gin.HandlerFunc {
 		c.Set("user_id", key)
 		c.Next()
 	}
+}
+
+func ParseJwtToken(tokenString string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		_, ok := token.Claims.(jwt.MapClaims)
+		if !ok {
+			return nil, errors.New("unexpected token claims")
+		}
+		return JwtKey, nil
+	})
+
+	return token, err
+}
+
+// GetValueFromToken get value form jwt token string
+func GetValueFromToken(tokenString, key string) (value interface{}, found bool) {
+	jwtToken, err := ParseJwtToken(tokenString)
+	if err != nil {
+		return
+	}
+
+	if claims, ok := jwtToken.Claims.(jwt.MapClaims); ok {
+		if v, ok := claims[key]; ok {
+			return v, true
+		}
+	}
+
+	return
 }

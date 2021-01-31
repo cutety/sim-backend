@@ -2,10 +2,8 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"sim-backend/middlewire"
 	"sim-backend/models/common"
 	"sim-backend/service/user"
-	"sim-backend/utils"
 )
 
 func GetUserByUserID(c *gin.Context) {
@@ -43,18 +41,5 @@ func Login(c *gin.Context) {
 	var service user.LoginService
 	_ = c.ShouldBindJSON(&service)
 	response := service.Login()
-	var token string
-	var res common.Response
-	if response.Status == utils.SUCCESS {
-		token, res = middlewire.SetToken(service.UserID)
-		c.JSON(200, common.LoginResponse{
-			Status: res.Status,
-			Msg:    res.Msg,
-			Error:  res.Msg,
-			Token:  token,
-		})
-	} else {
-		c.JSON(200, response)
-	}
-
+	c.JSON(200, response)
 }

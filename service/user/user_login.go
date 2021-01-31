@@ -1,6 +1,7 @@
 package user
 
 import (
+	"sim-backend/middlewire"
 	"sim-backend/models"
 	"sim-backend/models/common"
 	"sim-backend/utils"
@@ -19,5 +20,20 @@ func (service *LoginService) Login() common.Response {
 	if !utils.DecodePsw(user.Password, service.Password) {
 		return utils.Response(utils.ERROR_PASSWORD_WRONG, nil)
 	}
-	return utils.Response(utils.SUCCESS, nil)
+	token, response := middlewire.SetToken(user.UserID, user.Role)
+	if response.Status != utils.SUCCESS {
+		return common.Response{
+			Status: response.Status,
+			Data:   nil,
+			Msg:    response.Msg,
+			Error:  response.Error,
+		}
+	} else {
+		return common.Response{
+			Status: response.Status,
+			Data:   token,
+			Msg:    response.Msg,
+			Error:  response.Error,
+		}
+	}
 }
