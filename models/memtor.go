@@ -29,10 +29,10 @@ type Mentor struct {
 	PHDMajor string `gorm:"phd_major;type:varchar(255)" json:"phd_major"`
 }
 
-func TableName() string {
+func (*Mentor) TableName() string {
 	return "mentors"
 }
 
-func (*Mentor) Create(mentor Mentor) error {
+func (*Mentor) Create(mentor *Mentor) error {
 	return extension.DB.Create(&mentor).Error
 }

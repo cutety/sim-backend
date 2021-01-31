@@ -20,15 +20,16 @@ func InitRouter() {
 	{
 		auth.GET("user/info/:user_id", v1.GetUserByUserID)
 		auth.POST("user/password", v1.ChangePassword)
-
-
-		auth.POST("mentor/add", v1.CreateMemtor)
+		auth.POST("mentor", v1.CreateMemtor)
 	}
+
+
 
 	router := r.Group("api/v1")
 	{
 		router.GET("user/count", v1.InitUserPassword)
 		router.POST("user/login", v1.Login)
+		router.POST("student/application", v1.CreateApplication)
 	}
 
 	_ = r.Run(viper.GetString("server.port"))
