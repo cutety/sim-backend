@@ -11,7 +11,7 @@ var MUser User
 type User struct {
 	ID        uint `gorm:"primary_key"`
 	UserID string `gorm:"column:user_id;type:varchar(20)" json:"user_id"`
-	UserName string `gorm:"column:username;type:varchar(20)" json:"username"`
+	Username string `gorm:"column:username;type:varchar(20)" json:"username"`
 	Password string `gorm:"column:password;type:varchar(20)" json:"password"`
 	Role int `gorm:"column:role;type:int;DEFAULT:2" json:"role"`
 	CreatedAt time.Time `gorm:"type:timestamp"`

@@ -38,6 +38,7 @@ func InitRouter() {
 	admin.Use(middlewire.AuthRole(middlewire.ROLE_ADMIN))
 	{
 		admin.GET("admin", v1.GetUserByUserID)
+		admin.PUT("admin/mentor", v1.UpdateMentor)
 	}
 
 	// 无需权限
@@ -46,6 +47,7 @@ func InitRouter() {
 		router.GET("user/count", v1.InitUserPassword)
 		router.POST("user/login", v1.Login)
 		router.POST("student/application", v1.CreateApplication)
+		router.POST("user", v1.CreateUser)
 	}
 
 	_ = r.Run(viper.GetString("server.port"))

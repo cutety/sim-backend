@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"sim-backend/models/common"
 	"sim-backend/service/user"
+	"sim-backend/utils"
+	"sim-backend/utils/validator"
 )
 
 func GetUserByUserID(c *gin.Context) {
@@ -42,4 +44,24 @@ func Login(c *gin.Context) {
 	_ = c.ShouldBindJSON(&service)
 	response := service.Login()
 	c.JSON(200, response)
+}
+
+
+func CreateUser(c *gin.Context) {
+	var service user.CreateUserService
+	if err := c.ShouldBindJSON(&service); err == nil {
+		msg, code := validator.Validate(&service)
+		if code != utils.SUCCESS {
+			c.JSON(200, common.Response{
+				Status: code,
+				Msg:    msg,
+			})
+			c.Abort()
+			return
+		}
+		response := service.CreateUser()
+		c.JSON(200, response)
+	} else {
+		c.JSON(200, utils.Response(utils.ERROR, err))
+	}
 }
