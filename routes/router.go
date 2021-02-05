@@ -22,6 +22,8 @@ func InitRouter() {
 		//auth.GET("user/info/:user_id", v1.GetUserByUserID)
 		auth.POST("user/password", v1.ChangePassword)
 		auth.POST("mentor", v1.CreateMemtor)
+		auth.GET("user/match/mentor/:user_id", v1.GetApplyMatchingResult)
+		auth.GET("user/bind/mentor", v1.ChooseMentor)
 	}
 
 	//教师权限

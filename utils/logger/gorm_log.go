@@ -1,6 +1,8 @@
 package logger
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/sirupsen/logrus"
+)
 
 type GormLoggerI struct{}
 

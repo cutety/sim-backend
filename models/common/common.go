@@ -16,7 +16,7 @@ type Response struct {
 
 type DataList struct {
 	Items interface{} `json:"items"`
-	Total uint `json:"total"`
+	Total int64 `json:"total"`
 }
 
 type Pagination struct {
