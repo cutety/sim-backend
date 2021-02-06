@@ -14,6 +14,7 @@ const (
 	ERROR_USER_AUTHORITY   = 1006
 	ERROR_USER_EXIST       = 1007
 	ERROR_PASSWORD_MATCH = 1008
+	ERROR_APPLICATION_EXIST = 1009
 
 )
 
@@ -28,6 +29,7 @@ var errorMsgMap = map[int]string{
 	ERROR_USER_AUTHORITY:   "该用户无权限",
 	ERROR_USER_EXIST:       "用户不存在",
 	ERROR_PASSWORD_MATCH:"原密码不正确",
+	ERROR_APPLICATION_EXIST:"志愿信息未填报",
 }
 
 func GetErrMsg(code int) string {

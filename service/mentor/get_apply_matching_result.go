@@ -1,4 +1,4 @@
-package user
+package mentor
 
 import (
 	"sim-backend/models"
@@ -11,7 +11,7 @@ type GetApplyMatchingResultService struct {
 }
 
 func(*GetApplyMatchingResultService) GetApplyMatchingResult(userID string) common.Response {
-	result, total, err := models.MUser.GetMatchingResult(userID)
+	result, total, err := models.MMentor.GetMatchingResult(userID)
 	if err != nil {
 		return utils.ResponseWithError(utils.ERROR, err)
 	}

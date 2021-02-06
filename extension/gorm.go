@@ -27,7 +27,7 @@ func InitDB() {
 	}
 	db.SingularTable(false)
 	db.LogMode(true)
-	db.SetLogger(logger.NewGormLogger())
+	//db.SetLogger(logger.NewGormLogger())
 	db.DB().SetMaxIdleConns(50)
 	db.DB().SetMaxOpenConns(200)
 

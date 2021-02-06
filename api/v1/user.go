@@ -65,18 +65,3 @@ func CreateUser(c *gin.Context) {
 		c.JSON(200, utils.Response(utils.ERROR, err))
 	}
 }
-
-func GetApplyMatchingResult(c *gin.Context) {
-	userID := c.Param("user_id")
-	service := user.GetApplyMatchingResultService{}
-	response := service.GetApplyMatchingResult(userID)
-	c.JSON(200, response)
-}
-
-func ChooseMentor(c *gin.Context) {
-	userID := c.Query("user_id")
-	mentorUserID := c.Query("mentor_user_id")
-	service := user.ChooseMentorService{}
-	response := service.ChooseMentor(userID, mentorUserID)
-	c.JSON(200, response)
-}

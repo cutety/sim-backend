@@ -45,3 +45,16 @@ func UpdateMentor(c *gin.Context) {
 		c.JSON(200, utils.Response(utils.ERROR, err))
 	}
 }
+
+func GetMentorMatchingResult(c *gin.Context) {
+	userID := c.Query("user_id")
+	service := mentor.GetApplyMatchingResultService{}
+	response := service.GetApplyMatchingResult(userID)
+	c.JSON(200, response)
+}
+func ListMentoredStudents(c *gin.Context) {
+	userID := c.Query("user_id")
+	service := mentor.ListMentoredStudentsService{}
+	response := service.ListMentoredStudents(userID)
+	c.JSON(200, response)
+}

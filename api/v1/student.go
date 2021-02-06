@@ -15,3 +15,18 @@ func CreateApplication(c *gin.Context) {
 		c.JSON(200, common.Response{Error: err.Error()})
 	}
 }
+
+func GetApplyMatchingResult(c *gin.Context) {
+	userID := c.Param("user_id")
+	service := student.GetApplyMatchingResultService{}
+	response := service.GetApplyMatchingResult(userID)
+	c.JSON(200, response)
+}
+
+func ChooseMentor(c *gin.Context) {
+	userID := c.Query("user_id")
+	mentorUserID := c.Query("mentor_user_id")
+	service := student.ChooseMentorService{}
+	response := service.ChooseMentor(userID, mentorUserID)
+	c.JSON(200, response)
+}

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/jinzhu/gorm"
 	"sim-backend/extension"
 	"time"
 )
@@ -30,6 +31,15 @@ func (*Application) TableName() string {
 
 func (*Application) CreateApplication(info *Application) error {
 	return extension.DB.Where("user_id = ?", info.UserID).Create(&info).Error
+}
+
+func (Application) GetByUserID(userID string) (*Application, error) {
+	app := &Application{}
+	err := extension.DB.Where("user_id = ?", userID).Find(&app).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
+	return app, err
 }
 
 func (a *Application) UpdateMentorUserID(userID, mentorUserID string) error {

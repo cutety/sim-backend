@@ -27,11 +27,14 @@ func InitRouter() {
 	}
 
 	//教师权限
-	teacher := auth
-	teacher.Use(middlewire.JwtToken())
-	teacher.Use(middlewire.AuthRole(middlewire.ROLE_TEACHER))
+	mentor := auth
+	mentor.Use(middlewire.JwtToken())
+	mentor.Use(middlewire.AuthRole(middlewire.ROLE_TEACHER))
 	{
-		teacher.GET("user/info/:user_id", v1.GetUserByUserID)
+
+		mentor.GET("user/info/:user_id", v1.GetUserByUserID)
+		mentor.GET("mentor/match", v1.GetMentorMatchingResult)
+		mentor.GET("mentor/student/mentored", v1.ListMentoredStudents)
 	}
 
 	// 管理员权限
