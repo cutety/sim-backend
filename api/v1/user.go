@@ -65,3 +65,11 @@ func CreateUser(c *gin.Context) {
 		c.JSON(200, utils.Response(utils.ERROR, err))
 	}
 }
+
+func ChooseMentor(c *gin.Context) {
+	userID := c.Query("user_id")
+	mentorUserID := c.Query("mentor_user_id")
+	service := user.ChooseMentorService{}
+	response := service.ChooseMentor(userID, mentorUserID)
+	c.JSON(200, response)
+}

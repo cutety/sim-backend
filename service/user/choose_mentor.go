@@ -1,4 +1,4 @@
-package student
+package user
 
 import (
 	"sim-backend/models"
