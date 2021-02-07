@@ -1,0 +1,174 @@
+definitions:
+  common.Response:
+    properties:
+      data:
+        type: object
+      error:
+        type: string
+      msg:
+        example: OK
+        type: string
+      status:
+        example: 10001
+        type: integer
+    type: object
+  mentor.CreateMentorService:
+    properties:
+      degree:
+        type: string
+      email:
+        type: string
+      gender:
+        type: string
+      graduate_major:
+        type: string
+      graduate_school:
+        type: string
+      name:
+        type: string
+      phd_major:
+        type: string
+      phd_school:
+        type: string
+      phone:
+        type: string
+      qq:
+        type: string
+      research_direction:
+        type: string
+      undergraduate_major:
+        type: string
+      undergraduate_university:
+        type: string
+      user_id:
+        type: string
+      wechat:
+        type: string
+    required:
+    - name
+    - phone
+    - user_id
+    type: object
+  mentor.UpdateMentorService:
+    properties:
+      degree:
+        type: string
+      email:
+        type: string
+      gender:
+        type: string
+      graduate_major:
+        type: string
+      graduate_school:
+        type: string
+      name:
+        type: string
+      phd_major:
+        type: string
+      phd_school:
+        type: string
+      phone:
+        type: string
+      qq:
+        type: string
+      research_direction:
+        type: string
+      undergraduate_major:
+        type: string
+      undergraduate_university:
+        type: string
+      user_id:
+        type: string
+      wechat:
+        type: string
+    required:
+    - name
+    - phone
+    - user_id
+    type: object
+info:
+  contact: {}
+paths:
+  /admin/mentor:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 导师的个人信息
+        in: body
+        name: mentor
+        required: true
+        schema:
+          $ref: '#/definitions/mentor.UpdateMentorService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 更新导师信息
+      tags:
+      - Mentor
+  /mentor:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 导师的个人信息
+        in: body
+        name: mentor
+        required: true
+        schema:
+          $ref: '#/definitions/mentor.CreateMentorService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 添加导师
+      tags:
+      - Mentor
+  /mentor/match/{user_id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 导师的user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 导师根据userID获取匹配结果
+      tags:
+      - Mentor
+  /mentor/student/mentored/{user_id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 导师的user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 导师根据userID获取所指导的学生信息
+      tags:
+      - Mentor
+swagger: "2.0"

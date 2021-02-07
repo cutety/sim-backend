@@ -3,6 +3,8 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	v1 "sim-backend/api/v1"
 	"sim-backend/middlewire"
 	"sim-backend/utils/logger"
@@ -14,6 +16,7 @@ func InitRouter() {
 	r.Use(logger.GinLogger())
 	r.Use(gin.Recovery())
 	r.Use(middlewire.Cors())
+
 
 	// 需要认证的
 	auth := r.Group("api/v1")
@@ -45,7 +48,6 @@ func InitRouter() {
 		admin.GET("admin", v1.GetUserByUserID)
 		admin.PUT("admin/mentor", v1.UpdateMentor)
 	}
-
 	// 无需权限
 	router := r.Group("api/v1")
 	{
@@ -54,6 +56,11 @@ func InitRouter() {
 		router.POST("student/application", v1.CreateApplication)
 		router.POST("user", v1.CreateUser)
 	}
+
+
+	url := ginSwagger.URL("http://localhost:3000/swagger/doc.json") // The url pointing to API definition
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+
 
 	_ = r.Run(viper.GetString("server.port"))
 }

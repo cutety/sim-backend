@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"sim-backend/extension"
+	"sim-backend/models/common"
 	"time"
 )
 
@@ -61,7 +62,7 @@ type MatchingResult struct {
 	Mentor
 }
 
-func (*User) GetMatchingResult(userID string) ([]MatchingResult, int64, error) {
+func (*User) GetMatchingResult(pagination *common.Pagination, userID string) ([]MatchingResult, int64, error) {
 	var result []MatchingResult
 	var total int64
 	err := extension.DB.Raw(`
@@ -89,7 +90,9 @@ func (*User) GetMatchingResult(userID string) ([]MatchingResult, int64, error) {
 			users u
 			on u.user_id = a.user_id 
 		WHERE u.user_id = ?
-    `, userID).
-		Scan(&result).Find(&total).Error
+		LIMIT ? OFFSET ?
+    `, userID, pagination.Limit, (pagination.Page - 1) * pagination.Limit).
+		Scan(&result).Error
+	total = int64(len(result))
 	return result, total, err
 }

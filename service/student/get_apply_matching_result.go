@@ -10,8 +10,8 @@ type GetApplyMatchingResultService struct {
 
 }
 
-func(*GetApplyMatchingResultService) GetApplyMatchingResult(userID string) common.Response {
-	result, total, err := models.MUser.GetMatchingResult(userID)
+func(*GetApplyMatchingResultService) GetApplyMatchingResult(pagination *common.Pagination, userID string) common.Response {
+	result, total, err := models.MUser.GetMatchingResult(pagination, userID)
 	if err != nil {
 		return utils.ResponseWithError(utils.ERROR, err)
 	}

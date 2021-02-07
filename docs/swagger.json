@@ -1,0 +1,267 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/admin/mentor": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Mentor"
+                ],
+                "summary": "更新导师信息",
+                "parameters": [
+                    {
+                        "description": "导师的个人信息",
+                        "name": "mentor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mentor.UpdateMentorService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mentor": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Mentor"
+                ],
+                "summary": "添加导师",
+                "parameters": [
+                    {
+                        "description": "导师的个人信息",
+                        "name": "mentor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mentor.CreateMentorService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mentor/match/{user_id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Mentor"
+                ],
+                "summary": "导师根据userID获取匹配结果",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "导师的user_id",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mentor/student/mentored/{user_id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Mentor"
+                ],
+                "summary": "导师根据userID获取所指导的学生信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "导师的user_id",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "common.Response": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "msg": {
+                    "type": "string",
+                    "example": "OK"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 10001
+                }
+            }
+        },
+        "mentor.CreateMentorService": {
+            "type": "object",
+            "required": [
+                "name",
+                "phone",
+                "user_id"
+            ],
+            "properties": {
+                "degree": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "graduate_major": {
+                    "type": "string"
+                },
+                "graduate_school": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phd_major": {
+                    "type": "string"
+                },
+                "phd_school": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "qq": {
+                    "type": "string"
+                },
+                "research_direction": {
+                    "type": "string"
+                },
+                "undergraduate_major": {
+                    "type": "string"
+                },
+                "undergraduate_university": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "wechat": {
+                    "type": "string"
+                }
+            }
+        },
+        "mentor.UpdateMentorService": {
+            "type": "object",
+            "required": [
+                "name",
+                "phone",
+                "user_id"
+            ],
+            "properties": {
+                "degree": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "graduate_major": {
+                    "type": "string"
+                },
+                "graduate_school": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phd_major": {
+                    "type": "string"
+                },
+                "phd_school": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "qq": {
+                    "type": "string"
+                },
+                "research_direction": {
+                    "type": "string"
+                },
+                "undergraduate_major": {
+                    "type": "string"
+                },
+                "undergraduate_university": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "wechat": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

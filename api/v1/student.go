@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"sim-backend/models/common"
 	"sim-backend/service/student"
+	"sim-backend/utils"
 )
 
 func CreateApplication(c *gin.Context) {
@@ -18,7 +19,8 @@ func CreateApplication(c *gin.Context) {
 
 func GetApplyMatchingResult(c *gin.Context) {
 	userID := c.Param("user_id")
+	pagination, _ := utils.Pagination(c)
 	service := student.GetApplyMatchingResultService{}
-	response := service.GetApplyMatchingResult(userID)
+	response := service.GetApplyMatchingResult(pagination, userID)
 	c.JSON(200, response)
 }

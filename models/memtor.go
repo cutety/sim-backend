@@ -2,6 +2,7 @@ package models
 
 import (
 	"sim-backend/extension"
+	"sim-backend/models/common"
 	"time"
 )
 
@@ -57,7 +58,7 @@ type MentorMatchingResult struct {
 	IsAdmitted bool `gorm:"column:is_admitted;type:tinyint(1)" json:"is_admitted" label:"录取结果"`
 }
 
-func (*Mentor) GetMatchingResult(userID string) ([]MentorMatchingResult, int64, error) {
+func (*Mentor) GetMatchingResult(pagination *common.Pagination, userID string) ([]MentorMatchingResult, int64, error) {
 	var result []MentorMatchingResult
 	var total int64
 	err := extension.DB.Raw(`
@@ -78,14 +79,15 @@ func (*Mentor) GetMatchingResult(userID string) ([]MentorMatchingResult, int64, 
 			m.user_id = ?
 			AND a.mentor_user_id = ''
 			 
-    `, userID).
+    	LIMIT ? OFFSET ? 
+		`, userID, pagination.Limit, (pagination.Page - 1) * pagination.Limit).
 		Scan(&result).Error
 
 	total = int64(len(result))
 	return result, total, err
 }
 
-func (*Mentor) ListMentoredStudents(userID string) ([]MentorMatchingResult, int64, error) {
+func (*Mentor) ListMentoredStudents(pagination *common.Pagination, userID string) ([]MentorMatchingResult, int64, error) {
 	var apps []MentorMatchingResult
 	var total int64
 	err := extension.DB.Raw(`
@@ -102,7 +104,8 @@ func (*Mentor) ListMentoredStudents(userID string) ([]MentorMatchingResult, int6
 			on a.mentor_user_id = m.user_id
 		WHERE 
 			m.user_id = ?
-		`, userID).
+		LIMIT ? OFFSET ? 
+		`, userID, pagination.Limit, (pagination.Page - 1) * pagination.Limit).
 		Scan(&apps).Error
 
 	total = int64(len(apps))

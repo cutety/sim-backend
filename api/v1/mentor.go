@@ -8,6 +8,13 @@ import (
 	"sim-backend/utils/validator"
 )
 
+// @Summary 添加导师
+// @Tags Mentor
+// @Accept json
+// @Produce json
+// @Param mentor body mentor.CreateMentorService true "导师的个人信息"
+// @Success 200 {object} common.Response
+// @Router /mentor [post]
 func CreateMemtor(c *gin.Context) {
 	var service mentor.CreateMentorService
 	if err := c.ShouldBindJSON(&service); err == nil {
@@ -27,6 +34,13 @@ func CreateMemtor(c *gin.Context) {
 	}
 }
 
+// @Summary 更新导师信息
+// @Tags Mentor
+// @Accept json
+// @Produce json
+// @Param mentor body mentor.UpdateMentorService true "导师的个人信息"
+// @Success 200 {object} common.Response
+// @Router /admin/mentor [post]
 func UpdateMentor(c *gin.Context) {
 	var service mentor.UpdateMentorService
 	if err := c.ShouldBindJSON(&service); err == nil {
@@ -46,15 +60,32 @@ func UpdateMentor(c *gin.Context) {
 	}
 }
 
+// @Summary 导师根据userID获取匹配结果
+// @Tags Mentor
+// @Accept json
+// @Produce json
+// @Param user_id path string true "导师的user_id"
+// @Success 200 {object} common.Response
+// @Router /mentor/match/{user_id} [get]
 func GetMentorMatchingResult(c *gin.Context) {
 	userID := c.Query("user_id")
+	pagination, _ := utils.Pagination(c)
 	service := mentor.GetApplyMatchingResultService{}
-	response := service.GetApplyMatchingResult(userID)
+	response := service.GetApplyMatchingResult(pagination, userID)
 	c.JSON(200, response)
 }
+
+// @Summary 导师根据userID获取所指导的学生信息
+// @Tags Mentor
+// @Accept json
+// @Produce json
+// @Param user_id path string true "导师的user_id"
+// @Success 200 {object} common.Response
+// @Router /mentor/student/mentored/{user_id} [get]
 func ListMentoredStudents(c *gin.Context) {
 	userID := c.Query("user_id")
+	pagination, _ := utils.Pagination(c)
 	service := mentor.ListMentoredStudentsService{}
-	response := service.ListMentoredStudents(userID)
+	response := service.ListMentoredStudents(pagination, userID)
 	c.JSON(200, response)
 }

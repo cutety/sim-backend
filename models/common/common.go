@@ -8,10 +8,10 @@ type LoginResponse struct {
 }
 
 type Response struct {
-	Status int `json:"status"`
-	Data interface{} `json:"data"`
-	Msg string `json:"msg"`
-	Error string `json:"error"`
+	Status int `json:"status" example:"10001"`
+	Data interface{} `json:"data" example:""`
+	Msg string `json:"msg" example:"OK"`
+	Error string `json:"error" example:""`
 }
 
 type DataList struct {
