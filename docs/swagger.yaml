@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   common.Response:
     properties:
@@ -86,8 +87,11 @@ definitions:
     - phone
     - user_id
     type: object
+host: localhost:3000
 info:
   contact: {}
+  title: Swagger API
+  version: "1.0"
 paths:
   /admin/mentor:
     post:
@@ -131,15 +135,14 @@ paths:
       summary: 添加导师
       tags:
       - Mentor
-  /mentor/match/{user_id}:
+  /mentor/match:
     get:
       consumes:
       - application/json
       parameters:
       - description: 导师的user_id
-        in: path
+        in: query
         name: user_id
-        required: true
         type: string
       produces:
       - application/json
@@ -151,15 +154,14 @@ paths:
       summary: 导师根据userID获取匹配结果
       tags:
       - Mentor
-  /mentor/student/mentored/{user_id}:
+  /mentor/student/mentored:
     get:
       consumes:
       - application/json
       parameters:
       - description: 导师的user_id
-        in: path
+        in: query
         name: user_id
-        required: true
         type: string
       produces:
       - application/json

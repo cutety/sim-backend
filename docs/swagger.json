@@ -1,8 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "title": "Swagger API",
+        "contact": {},
+        "version": "1.0"
     },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
     "paths": {
         "/admin/mentor": {
             "post": {
@@ -70,7 +74,7 @@
                 }
             }
         },
-        "/mentor/match/{user_id}": {
+        "/mentor/match": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -87,8 +91,7 @@
                         "type": "string",
                         "description": "导师的user_id",
                         "name": "user_id",
-                        "in": "path",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -101,7 +104,7 @@
                 }
             }
         },
-        "/mentor/student/mentored/{user_id}": {
+        "/mentor/student/mentored": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -118,8 +121,7 @@
                         "type": "string",
                         "description": "导师的user_id",
                         "name": "user_id",
-                        "in": "path",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {

@@ -10,6 +10,7 @@ import (
 	"sim-backend/utils/logger"
 )
 
+
 func InitRouter() {
 	gin.SetMode(viper.GetString("server.mode"))
 	r := gin.New()
@@ -58,8 +59,7 @@ func InitRouter() {
 	}
 
 
-	url := ginSwagger.URL("http://localhost:3000/swagger/doc.json") // The url pointing to API definition
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 
 	_ = r.Run(viper.GetString("server.port"))

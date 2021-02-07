@@ -90,7 +90,7 @@ var doc = `{
                 }
             }
         },
-        "/mentor/match/{user_id}": {
+        "/mentor/match": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -107,8 +107,7 @@ var doc = `{
                         "type": "string",
                         "description": "导师的user_id",
                         "name": "user_id",
-                        "in": "path",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -121,7 +120,7 @@ var doc = `{
                 }
             }
         },
-        "/mentor/student/mentored/{user_id}": {
+        "/mentor/student/mentored": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -138,8 +137,7 @@ var doc = `{
                         "type": "string",
                         "description": "导师的user_id",
                         "name": "user_id",
-                        "in": "path",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -297,11 +295,11 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "",
-	Host:        "",
-	BasePath:    "",
+	Version:     "1.0",
+	Host:        "localhost:3000",
+	BasePath:    "/api/v1",
 	Schemes:     []string{},
-	Title:       "",
+	Title:       "Swagger API",
 	Description: "",
 }
 

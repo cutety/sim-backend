@@ -64,9 +64,9 @@ func UpdateMentor(c *gin.Context) {
 // @Tags Mentor
 // @Accept json
 // @Produce json
-// @Param user_id path string true "导师的user_id"
+// @Param user_id query string false "导师的user_id"
 // @Success 200 {object} common.Response
-// @Router /mentor/match/{user_id} [get]
+// @Router /mentor/match [get]
 func GetMentorMatchingResult(c *gin.Context) {
 	userID := c.Query("user_id")
 	pagination, _ := utils.Pagination(c)
@@ -79,9 +79,9 @@ func GetMentorMatchingResult(c *gin.Context) {
 // @Tags Mentor
 // @Accept json
 // @Produce json
-// @Param user_id path string true "导师的user_id"
+// @Param user_id query string false "导师的user_id"
 // @Success 200 {object} common.Response
-// @Router /mentor/student/mentored/{user_id} [get]
+// @Router /mentor/student/mentored [get]
 func ListMentoredStudents(c *gin.Context) {
 	userID := c.Query("user_id")
 	pagination, _ := utils.Pagination(c)
