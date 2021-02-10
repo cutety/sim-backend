@@ -8,6 +8,13 @@ import (
 	"sim-backend/utils/validator"
 )
 
+// @Summary 根据user_id获取用户信息
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param user_id path string true "user_id"
+// @Success 200 {object} common.Response
+// @Router /user/info/:user_id [get]
 func GetUserByUserID(c *gin.Context) {
 	userID := c.Param("user_id")
 	service := user.GetUserByUserIDService{}
@@ -19,6 +26,13 @@ func GetUserByID(c *gin.Context) {
 
 }
 
+// @Summary 修改密码
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param ChangePassword body user.ChangePasswordService true "修改密码RequestBody"
+// @Success 200 {object} common.Response
+// @Router /user/password [post]
 func ChangePassword(c *gin.Context) {
 	service := &user.ChangePasswordService{}
 	if err := c.ShouldBindJSON(service); err == nil {
@@ -39,6 +53,13 @@ func InitUserPassword(c *gin.Context) {
 	}
 }
 
+// @Summary 用户登录
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param LoginService body user.LoginService true "登录参数"
+// @Success 200 {object} common.Response
+// @Router /user/login [post]
 func Login(c *gin.Context) {
 	var service user.LoginService
 	_ = c.ShouldBindJSON(&service)
@@ -46,7 +67,13 @@ func Login(c *gin.Context) {
 	c.JSON(200, response)
 }
 
-
+// @Summary 创建用户
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param CreateUserService body user.CreateUserService true "创建用户参数"
+// @Success 200 {object} common.Response
+// @Router /user [post]
 func CreateUser(c *gin.Context) {
 	var service user.CreateUserService
 	if err := c.ShouldBindJSON(&service); err == nil {
@@ -66,6 +93,14 @@ func CreateUser(c *gin.Context) {
 	}
 }
 
+// @Summary 师生互选
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param user_id query string true "学生user_id"
+// @Param mentor_user_id query string true "导师user_id"
+// @Success 200 {object} common.Response
+// @Router /user/bind/mentor [get]
 func ChooseMentor(c *gin.Context) {
 	userID := c.Query("user_id")
 	mentorUserID := c.Query("mentor_user_id")

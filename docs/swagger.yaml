@@ -87,6 +87,54 @@ definitions:
     - phone
     - user_id
     type: object
+  student.CreateApplicationService:
+    properties:
+      admission_major:
+        type: string
+      admission_shcool:
+        type: string
+      apply_major:
+        type: string
+      apply_school:
+        type: string
+      isAdmitted:
+        type: boolean
+      preliminiary_result:
+        type: number
+      retrail_result:
+        type: number
+      user_id:
+        type: string
+    type: object
+  user.ChangePasswordService:
+    properties:
+      id:
+        type: integer
+      new_password:
+        type: string
+      password:
+        type: string
+      user_id:
+        type: string
+    type: object
+  user.CreateUserService:
+    properties:
+      password:
+        type: string
+      role:
+        type: integer
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+  user.LoginService:
+    properties:
+      password:
+        type: string
+      user_id:
+        type: string
+    type: object
 host: localhost:3000
 info:
   contact: {}
@@ -173,4 +221,152 @@ paths:
       summary: 导师根据userID获取所指导的学生信息
       tags:
       - Mentor
+  /student/application:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 学生的报考信息
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/student.CreateApplicationService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 学生更新报考信息
+      tags:
+      - Student
+  /user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建用户参数
+        in: body
+        name: CreateUserService
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 创建用户
+      tags:
+      - User
+  /user/bind/mentor:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 学生user_id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      - description: 导师user_id
+        in: query
+        name: mentor_user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 师生互选
+      tags:
+      - User
+  /user/info/:user_id:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根据user_id获取用户信息
+      tags:
+      - User
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录参数
+        in: body
+        name: LoginService
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 用户登录
+      tags:
+      - User
+  /user/match/mentor:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 学生的user_id
+        in: query
+        name: user_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 学生获取匹配结果
+      tags:
+      - Student
+  /user/password:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改密码RequestBody
+        in: body
+        name: ChangePassword
+        required: true
+        schema:
+          $ref: '#/definitions/user.ChangePasswordService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 修改密码
+      tags:
+      - User
 swagger: "2.0"

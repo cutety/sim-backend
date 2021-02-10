@@ -20,7 +20,6 @@ func InitDB() {
 		viper.GetString("extensions.mysql.port"),
 		viper.GetString("extensions.mysql.db"),
 	)
-	logger.Info(dsn)
 	db, err := gorm.Open("mysql", dsn)
 	if err != nil {
 		panic(err)
