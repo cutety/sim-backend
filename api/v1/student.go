@@ -38,3 +38,17 @@ func GetApplyMatchingResult(c *gin.Context) {
 	response := service.GetApplyMatchingResult(pagination, userID)
 	c.JSON(200, response)
 }
+
+// @Summary 学生获取报考信息
+// @Tags Student
+// @Accept json
+// @Produce json
+// @Param user_id query string false "学生的user_id"
+// @Success 200 {object} common.Response
+// @Router /user/apply/info [get]
+func GetApplicationInfo(c *gin.Context) {
+	userID := c.Query("user_id")
+	service := student.GetApplicationInfo{}
+	response := service.GetApplicationInfo(userID)
+	c.JSON(200, response)
+}

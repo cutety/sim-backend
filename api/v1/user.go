@@ -2,9 +2,11 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 	"sim-backend/models/common"
 	"sim-backend/service/user"
 	"sim-backend/utils"
+	"sim-backend/utils/logger"
 	"sim-backend/utils/validator"
 )
 
@@ -106,5 +108,19 @@ func ChooseMentor(c *gin.Context) {
 	mentorUserID := c.Query("mentor_user_id")
 	service := user.ChooseMentorService{}
 	response := service.ChooseMentor(userID, mentorUserID)
+	c.JSON(200, response)
+}
+
+// @Summary 根据token获取用户信息
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object} common.Response
+// @Router /info/me [get]
+func GetInfo(c *gin.Context) {
+	userID, _ := c.Get("user_id")
+	logger.Info("userId", userID)
+	service := user.GetUserByUserIDService{}
+	response := service.GetUserByUserIDService(cast.ToString(userID))
 	c.JSON(200, response)
 }
