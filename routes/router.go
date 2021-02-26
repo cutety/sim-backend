@@ -30,6 +30,7 @@ func InitRouter() {
 		auth.GET("user/bind/mentor", v1.ChooseMentor)
 		auth.GET("info/me", v1.GetInfo)
 		auth.GET("user/apply/info", v1.GetApplicationInfo)
+		auth.GET("mentor/info", v1.GetMentorInfo)
 	}
 
 	//教师权限

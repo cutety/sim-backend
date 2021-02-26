@@ -89,3 +89,17 @@ func ListMentoredStudents(c *gin.Context) {
 	response := service.ListMentoredStudents(pagination, userID)
 	c.JSON(200, response)
 }
+
+// @Summary 根据user_id获取导师信息
+// @Tags Mentor
+// @Accept json
+// @Produce json
+// @Param user_id query string false "导师的user_id"
+// @Success 200 {object} common.Response
+// @Router /mentor/info [get]
+func GetMentorInfo(c *gin.Context) {
+	userID := c.Query("user_id")
+	service := mentor.GetMentorInfoService{}
+	response := service.GetMentorInfo(userID)
+	c.JSON(200, response)
+}

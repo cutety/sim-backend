@@ -26,8 +26,11 @@ type ApplicationInfo struct {
 
 func (*GetApplicationInfo) GetApplicationInfo(userID string) common.Response {
 	application, err := models.MApplication.GetByUserID(userID)
-	if err != nil {
+	if err != nil{
 		return utils.ResponseWithError(utils.ERROR, err)
+	}
+	if application == nil {
+		return utils.Response(200, &ApplicationInfo{})
 	}
 	mentor := &models.Mentor{}
 	if application.MentorUserID != "" {

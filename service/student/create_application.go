@@ -15,7 +15,7 @@ type CreateApplicationService struct {
 	RetrailResult float32 `form:"retrail_result" json:"retrail_result"`
 	AdmissionSchool string `form:"admission_shcool" json:"admission_shcool"`
 	AdmissionMajor string `form:"admission_major" json:"admission_major"`
-	IsAdmitted bool `form:"is_admitted" is_admitted:"is_admitted"`
+	IsAdmitted bool `form:"is_admitted" json:"is_admitted"`
 }
 
 func (service *CreateApplicationService) CreateApplication() common.Response {

@@ -18,7 +18,7 @@ type Application struct {
 	RetrailResult float32 `gorm:"column:retrail_result;type:decimal(11,2)" json:"retrail_result" label:"复试成绩"`
 	AdmissionSchool string `gorm:"column:admission_shcool;type:varchar(255)" json:"admission_shcool" validate:"required" label:"录取院校"`
 	AdmissionMajor string `gorm:"column:admission_major;type:varchar(255)" json:"admission_major" validate:"required" label:"录取院校"`
-	IsAdmitted bool `gorm:"column:is_admitted;type:tinyint(1)" json:"is_admitted" label:"录取结果"`
+	IsAdmitted bool `gorm:"column:is_admitted;" json:"is_admitted" label:"录取结果"`
 	CreatedAt time.Time `gorm:"type:timestamp"`
 	UpdatedAt time.Time `gorm:"type:timestamp"`
 	DeletedAt *time.Time `sql:"index" gorm:"type:timestamp"`
@@ -45,10 +45,19 @@ func (a *Application) Upsert(info *Application) error {
 }
 
 func (a *Application) UpdateByUserID(userID string, info *Application) error {
+	data := make(map[string]interface{})
+	data["mentor_user_id"]=""
+	data["apply_school"]=info.ApplySchool
+	data["apply_major"]=info.ApplyMajor
+	data["preliminiary_result"]=info.PreliminaryResult
+	data["retrail_result"]=info.RetrailResult
+	data["admission_shcool"]=info.AdmissionSchool
+	data["admission_major"]=info.AdmissionMajor
+	data["is_admitted"] = info.IsAdmitted
 	return extension.DB.
 		Table(a.TableName()).
 		Where("user_id = ?", userID).
-		Updates(info).
+		Updates(data).
 		Error
 }
 
