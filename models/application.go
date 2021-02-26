@@ -33,7 +33,26 @@ func (*Application) CreateApplication(info *Application) error {
 	return extension.DB.Where("user_id = ?", info.UserID).Create(&info).Error
 }
 
-func (Application) GetByUserID(userID string) (*Application, error) {
+func (a *Application) Upsert(info *Application) error {
+	user, err := a.GetByUserID(info.UserID)
+	if err != nil {
+		return err
+	}
+	if user == nil {
+		return a.CreateApplication(info)
+	}
+	return a.UpdateByUserID(user.UserID, info)
+}
+
+func (a *Application) UpdateByUserID(userID string, info *Application) error {
+	return extension.DB.
+		Table(a.TableName()).
+		Where("user_id = ?", userID).
+		Updates(info).
+		Error
+}
+
+func (*Application) GetByUserID(userID string) (*Application, error) {
 	app := &Application{}
 	err := extension.DB.Where("user_id = ?", userID).Find(&app).Error
 	if err == gorm.ErrRecordNotFound {

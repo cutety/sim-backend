@@ -32,7 +32,7 @@ func (service *CreateApplicationService) CreateApplication() common.Response {
 		UpdatedAt:         time.Time{},
 		DeletedAt:         nil,
 	}
-	err := models.MApplication.CreateApplication(application)
+	err := models.MApplication.Upsert(application)
 	if err != nil {
 		return utils.ResponseWithError(utils.ERROR, err)
 	}

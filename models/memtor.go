@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/jinzhu/gorm"
 	"sim-backend/extension"
 	"sim-backend/models/common"
 	"time"
@@ -36,6 +37,18 @@ func (*Mentor) TableName() string {
 
 func (*Mentor) Create(mentor *Mentor) error {
 	return extension.DB.Create(&mentor).Error
+}
+
+func (*Mentor) GetByMentorID(mentorID string) (*Mentor, error) {
+	mentor := &Mentor{}
+	err := extension.DB.Where("user_id = ?", mentorID).Find(&mentor).Error
+	if err == gorm.ErrRecordNotFound {
+		return &Mentor{}, err
+	}
+	if err != nil {
+		return nil, err
+	}
+	return mentor, err
 }
 
 type MentorMatchingResult struct {

@@ -19,8 +19,8 @@ const (
 )
 
 var errorMsgMap = map[int]string{
-	SUCCESS:                "OK",
-	ERROR:                  "FAIL",
+	SUCCESS:                "操作成功",
+	ERROR:                  "操作失败",
 	ERROR_PASSWORD_WRONG:   "密码错误",
 	ERROR_TOKEN_EXIST:      "TOKEN不存在，请重新登录",
 	ERROR_TOKEN_RUNTIME:    "TOKEN已过期，请重新登录",
