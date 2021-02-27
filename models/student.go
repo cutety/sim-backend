@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"github.com/jinzhu/gorm"
+	"sim-backend/extension"
+	"time"
+)
 
 var MStudent Student
 
@@ -26,4 +30,18 @@ type Student struct {
 func (*Student) TableName() string {
 	return "students"
 }
+
+func (*Student) Update(student *Student) error {
+	return extension.DB.Model(&student).Where("stu_id = ?", student.StuID).Updates(&student).Error
+}
+
+func (*Student) GetByStuID(stuID string) (*Student, error) {
+	stu := &Student{}
+	err := extension.DB.Where("stu_id = ?", stuID).Find(&stu).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil ,nil
+	}
+	return stu, err
+}
+
 

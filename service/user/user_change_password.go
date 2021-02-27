@@ -4,6 +4,7 @@ import (
 	"sim-backend/models"
 	"sim-backend/models/common"
 	"sim-backend/utils"
+	"sim-backend/utils/logger"
 )
 
 type ChangePasswordService struct {
@@ -35,6 +36,7 @@ func (service *ChangePasswordService) UserChangePasswordByUserID() common.Respon
 	if !utils.DecodePsw(user.Password, service.Password) {
 		return utils.Response(utils.ERROR_PASSWORD_MATCH, nil)
 	}
+	logger.Info("new password:", service.NewPassword)
 	encodedPsw := utils.ScryptPsw(service.NewPassword)
 	err = models.MUser.UpdatePasswordById(user.ID, encodedPsw)
 	if err != nil {

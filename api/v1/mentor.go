@@ -40,7 +40,7 @@ func CreateMemtor(c *gin.Context) {
 // @Produce json
 // @Param mentor body mentor.UpdateMentorService true "导师的个人信息"
 // @Success 200 {object} common.Response
-// @Router /admin/mentor [post]
+// @Router /mentor/info [put]
 func UpdateMentor(c *gin.Context) {
 	var service mentor.UpdateMentorService
 	if err := c.ShouldBindJSON(&service); err == nil {

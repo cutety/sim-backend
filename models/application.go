@@ -77,3 +77,11 @@ func (a *Application) UpdateMentorUserID(userID, mentorUserID string) error {
 		Update("mentor_user_id", mentorUserID).
 		Error
 }
+
+func (a *Application) Dissolve(userID string) error {
+	return extension.DB.
+		Table(a.TableName()).
+		Where("user_id = ?", userID).
+		Update("mentor_user_id", "").
+		Error
+}

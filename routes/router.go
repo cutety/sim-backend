@@ -24,13 +24,17 @@ func InitRouter() {
 	auth.Use(middlewire.JwtToken())
 	{
 		//auth.GET("user/info/:user_id", v1.GetUserByUserID)
-		auth.POST("user/password", v1.ChangePassword)
+		auth.PUT("user/password", v1.ChangePassword)
 		auth.POST("mentor", v1.CreateMemtor)
 		auth.GET("user/match/mentor", v1.GetApplyMatchingResult)
 		auth.GET("user/bind/mentor", v1.ChooseMentor)
 		auth.GET("info/me", v1.GetInfo)
 		auth.GET("user/apply/info", v1.GetApplicationInfo)
 		auth.GET("mentor/info", v1.GetMentorInfo)
+		auth.GET("user/dissolve/mentor", v1.Dissolve)
+		auth.PUT("student/info", v1.UpdateInfo)
+		auth.GET("user/info", v1.GetUserByUserID)
+		auth.GET("student/info", v1.GetStudent)
 	}
 
 	//教师权限
@@ -39,9 +43,10 @@ func InitRouter() {
 	mentor.Use(middlewire.AuthRole(middlewire.ROLE_TEACHER))
 	{
 
-		mentor.GET("user/info/:user_id", v1.GetUserByUserID)
+
 		mentor.GET("mentor/match", v1.GetMentorMatchingResult)
 		mentor.GET("mentor/student/mentored", v1.ListMentoredStudents)
+		mentor.PUT("mentor/info", v1.UpdateMentor)
 	}
 
 	// 管理员权限
@@ -50,7 +55,8 @@ func InitRouter() {
 	admin.Use(middlewire.AuthRole(middlewire.ROLE_ADMIN))
 	{
 		admin.GET("admin", v1.GetUserByUserID)
-		admin.PUT("admin/mentor", v1.UpdateMentor)
+		admin.GET("admin/batch/mentor", v1.BatchAddMentor)
+		admin.GET("admin/list/mentor", v1.ListMentors)
 	}
 	// 无需权限
 	router := r.Group("api/v1")
@@ -59,6 +65,7 @@ func InitRouter() {
 		router.POST("user/login", v1.Login)
 		router.POST("student/application", v1.CreateApplication)
 		router.POST("user", v1.CreateUser)
+		router.POST("upload", v1.UpLoad)
 	}
 
 

@@ -52,3 +52,34 @@ func GetApplicationInfo(c *gin.Context) {
 	response := service.GetApplicationInfo(userID)
 	c.JSON(200, response)
 }
+
+// @Summary 学生更新个人信息
+// @Tags Student
+// @Accept json
+// @Produce json
+// @Param student body student.UpdateInfoService true "个人信息"
+// @Success 200 {object} common.Response
+// @Router /student/application [put]
+func UpdateInfo(c *gin.Context) {
+	var service student.UpdateInfoService
+	if err := c.ShouldBindJSON(&service); err == nil {
+		response := service.UpdateInfo()
+		c.JSON(200, response)
+	} else {
+		c.JSON(200, common.Response{Error: err.Error()})
+	}
+}
+
+// @Summary 获取学生信息
+// @Tags Student
+// @Accept json
+// @Produce json
+// @Param user_id query string false "学生的user_id"
+// @Success 200 {object} common.Response
+// @Router /student/info/ [get]
+func GetStudent(c *gin.Context) {
+	stuID := c.Query("stu_id")
+	service := student.GetStudentByStuIDService{}
+	response := service.GetStudentByStuID(stuID)
+	c.JSON(200, response)
+}

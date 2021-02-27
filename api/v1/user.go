@@ -14,18 +14,14 @@ import (
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param user_id path string true "user_id"
+// @Param user_id query string true "user_id"
 // @Success 200 {object} common.Response
 // @Router /user/info/:user_id [get]
 func GetUserByUserID(c *gin.Context) {
-	userID := c.Param("user_id")
+	userID := c.Query("user_id")
 	service := user.GetUserByUserIDService{}
 	response := service.GetUserByUserIDService(userID)
 	c.JSON(200, response)
-}
-
-func GetUserByID(c *gin.Context) {
-
 }
 
 // @Summary 修改密码
@@ -108,6 +104,20 @@ func ChooseMentor(c *gin.Context) {
 	mentorUserID := c.Query("mentor_user_id")
 	service := user.ChooseMentorService{}
 	response := service.ChooseMentor(userID, mentorUserID)
+	c.JSON(200, response)
+}
+
+// @Summary 师生互选
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param user_id query string true "学生user_id"
+// @Success 200 {object} common.Response
+// @Router /user/dissolve/mentor [get]
+func Dissolve(c *gin.Context) {
+	userID := c.Query("user_id")
+	service := user.DissolveService{}
+	response := service.Dissolve(userID)
 	c.JSON(200, response)
 }
 

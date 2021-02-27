@@ -17,5 +17,9 @@
     host = "127.0.0.1"
     port = 6379
     db = 0
-
+[qiniu]
+    acessKey="1V6w1HQkhPBISlwckhMsZsE6DYNpUEXnlR0Y22xP"
+    secretKey="tcNDpBwS6KXLjJN2DWcPV8cx11SExl3HIWtISb0G"
+    bucket="sim"
+    qiniuServer="http://qp6jksgj7.hn-bkt.clouddn.com/"
 
