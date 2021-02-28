@@ -4,9 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"sim-backend/models/common"
 	"sim-backend/service/mentor"
-	"sim-backend/service/user"
 	"sim-backend/utils"
 	"sim-backend/utils/validator"
+	"strconv"
 )
 
 // @Summary 添加导师
@@ -87,7 +87,22 @@ func ListMentoredStudents(c *gin.Context) {
 	userID := c.Query("user_id")
 	pagination, _ := utils.Pagination(c)
 	service := mentor.ListMentoredStudentsService{}
-	response := service.ListMentoredStudents(pagination, userID)
+	response := service.ListMentoredStudents(pagination, userID, common.IS_MATCHED)
+	c.JSON(200, response)
+}
+
+// @Summary 根据userID获取指导申请
+// @Tags Mentor
+// @Accept json
+// @Produce json
+// @Param user_id query string false "导师的user_id"
+// @Success 200 {object} common.Response
+// @Router /mentor/student/request [get]
+func ListInstructRequest(c *gin.Context) {
+	userID := c.Query("user_id")
+	pagination, _ := utils.Pagination(c)
+	service := mentor.ListMentoredStudentsService{}
+	response := service.ListMentoredStudents(pagination, userID, common.NOT_MATCHED)
 	c.JSON(200, response)
 }
 
@@ -116,7 +131,9 @@ func GetMentorInfo(c *gin.Context) {
 func ChooseStudent(c *gin.Context) {
 	userID := c.Query("user_id")
 	mentorUserID := c.Query("mentor_user_id")
-	service := user.ChooseMentorService{}
-	response := service.ChooseMentor(userID, mentorUserID)
+	status,_ := strconv.Atoi(c.Query("status"))
+
+	service := mentor.ChooseStudentService{}
+	response := service.ChooseStudent(userID, mentorUserID, status)
 	c.JSON(200, response)
 }

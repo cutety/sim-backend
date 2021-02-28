@@ -120,3 +120,20 @@ func GetInfo(c *gin.Context) {
 	response := service.GetUserByUserIDService(cast.ToString(userID))
 	c.JSON(200, response)
 }
+
+// @Summary 师生双选
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param application body user.UpdateApplicationService true "师生双选Request"
+// @Success 200 {object} common.Response
+// @Router /user/dual/select [put]
+func DualSelect(c *gin.Context) {
+	service := &user.UpdateApplicationService{}
+	if err := c.ShouldBindJSON(service); err == nil {
+		response := service.UpdateApplication()
+		c.JSON(200, response)
+	} else {
+		c.JSON(200, common.Response{Error: err.Error()})
+	}
+}

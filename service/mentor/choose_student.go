@@ -10,7 +10,7 @@ type ChooseStudentService struct {
 
 }
 
-func (*ChooseStudentService) ChooseStudent(userID, mentorUserID string) common.Response {
+func (*ChooseStudentService) ChooseStudent(userID, mentorUserID string, status int) common.Response {
 	app, err := models.MApplication.GetByUserID(userID)
 	if err != nil {
 		return utils.ResponseWithError(utils.ERROR, err)
@@ -22,7 +22,7 @@ func (*ChooseStudentService) ChooseStudent(userID, mentorUserID string) common.R
 	if err != nil {
 		return utils.ResponseWithError(utils.ERROR, err)
 	}
-	err = models.MApplication.UpdateMatchStatus(userID, common.IS_MATCHED)
+	err = models.MApplication.UpdateMatchStatus(userID, status)
 	if err != nil {
 		return utils.ResponseWithError(utils.ERROR, err)
 	}

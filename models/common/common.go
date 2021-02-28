@@ -2,6 +2,7 @@ package common
 
 const (
 	IS_MATCHED = 1
+	NOT_MATCHED = 0
 )
 
 type LoginResponse struct {

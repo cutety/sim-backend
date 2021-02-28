@@ -21,6 +21,8 @@ type ApplicationInfo struct {
 	AdmissionSchool string `gorm:"column:admission_shcool;type:varchar(255)" json:"admission_shcool" validate:"required" label:"录取院校"`
 	AdmissionMajor string `gorm:"column:admission_major;type:varchar(255)" json:"admission_major" validate:"required" label:"录取院校"`
 	IsAdmitted bool `gorm:"column:is_admitted;type:tinyint(1)" json:"is_admitted" label:"录取结果"`
+	Status int `gorm:"column:status;" json:"status" label:"匹配情况"`
+	Note string `gorm:"column:note;" json:"note" label:"留言"`
 	MentorName string `gorm:"column:name;type:varchar(20)" json:"mentor_name" validate:"required" label:"导师姓名"`
 }
 
@@ -50,6 +52,8 @@ func (*GetApplicationInfo) GetApplicationInfo(userID string) common.Response {
 		AdmissionSchool:application.AdmissionSchool,
 		AdmissionMajor:application.AdmissionMajor,
 		IsAdmitted :application.IsAdmitted,
+		Status: application.Status,
+		Note: application.Note,
 		MentorName:mentor.Name,
 	})
 }

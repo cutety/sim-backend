@@ -19,7 +19,8 @@ type Application struct {
 	AdmissionSchool string `gorm:"column:admission_shcool;type:varchar(255)" json:"admission_shcool" validate:"required" label:"录取院校"`
 	AdmissionMajor string `gorm:"column:admission_major;type:varchar(255)" json:"admission_major" validate:"required" label:"录取院校"`
 	IsAdmitted bool `gorm:"column:is_admitted;" json:"is_admitted" label:"录取结果"`
-	IsMatched bool `gorm:"column:is_matched;" json:"is_matched" label:"是否双选"`
+	Status int `gorm:"column:status;" json:"status" label:"匹配情况"`
+	Note string `gorm:"column:note;" json:"note" label:"留言"`
 	CreatedAt time.Time `gorm:"type:timestamp"`
 	UpdatedAt time.Time `gorm:"type:timestamp"`
 	DeletedAt *time.Time `sql:"index" gorm:"type:timestamp"`
@@ -47,7 +48,7 @@ func (a *Application) Upsert(info *Application) error {
 
 func (a *Application) UpdateByUserID(userID string, info *Application) error {
 	data := make(map[string]interface{})
-	data["mentor_user_id"]=""
+	data["mentor_user_id"]=info.MentorUserID
 	data["apply_school"]=info.ApplySchool
 	data["apply_major"]=info.ApplyMajor
 	data["preliminiary_result"]=info.PreliminaryResult
@@ -55,6 +56,8 @@ func (a *Application) UpdateByUserID(userID string, info *Application) error {
 	data["admission_shcool"]=info.AdmissionSchool
 	data["admission_major"]=info.AdmissionMajor
 	data["is_admitted"] = info.IsAdmitted
+	data["status"] = info.Status
+	data["note"] = info.Note
 	return extension.DB.
 		Table(a.TableName()).
 		Where("user_id = ?", userID).
@@ -90,11 +93,25 @@ func (a *Application) UpdateMatchStatus(userID string, status int) error {
 func (a *Application) Dissolve(userID string) error {
 	info := map[string]interface{}{
 		"mentor_user_id":"",
-		"is_matched":0,
+		"status":0,
 	}
 	return extension.DB.
 		Table(a.TableName()).
 		Where("user_id = ?", userID).
 		Updates(info).
+		Error
+}
+
+func (a *Application) UpdateApplication(app *Application) error {
+	data := map[string]interface{}{
+		"user_id":app.UserID,
+		"mentor_user_id":app.MentorUserID,
+		"status":app.Status,
+		"note":app.Note,
+	}
+	return extension.DB.
+		Table(a.TableName()).
+		Where("user_id = ?", data["user_id"]).
+		Update(data).
 		Error
 }

@@ -35,6 +35,9 @@ func InitRouter() {
 		auth.PUT("student/info", v1.UpdateInfo)
 		auth.GET("user/info", v1.GetUserByUserID)
 		auth.GET("student/info", v1.GetStudent)
+		auth.PUT("user/dual/select", v1.DualSelect)
+		auth.GET("user/list/mentor", v1.ListMentors)
+		auth.POST("student/application", v1.CreateApplication)
 	}
 
 	//教师权限
@@ -46,6 +49,7 @@ func InitRouter() {
 
 		mentor.GET("mentor/match", v1.GetMentorMatchingResult)
 		mentor.GET("mentor/student/mentored", v1.ListMentoredStudents)
+		mentor.GET("/mentor/student/request", v1.ListInstructRequest)
 		mentor.PUT("mentor/info", v1.UpdateMentor)
 		mentor.GET("mentor/bind/student", v1.ChooseStudent)
 	}
@@ -64,7 +68,6 @@ func InitRouter() {
 	{
 		router.GET("user/count", v1.InitUserPassword)
 		router.POST("user/login", v1.Login)
-		router.POST("student/application", v1.CreateApplication)
 		router.POST("user", v1.CreateUser)
 		router.POST("upload", v1.UpLoad)
 	}
