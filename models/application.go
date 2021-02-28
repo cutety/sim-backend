@@ -93,7 +93,7 @@ func (a *Application) UpdateMatchStatus(userID string, status int) error {
 func (a *Application) Dissolve(userID string) error {
 	info := map[string]interface{}{
 		"mentor_user_id":"",
-		"status":0,
+		"status":2,
 	}
 	return extension.DB.
 		Table(a.TableName()).
