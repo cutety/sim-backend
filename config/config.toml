@@ -8,7 +8,7 @@
     jwtKey="skk2jmm13z"
 [extensions]
     [extensions.mysql]
-    host = "127.0.0.1"
+    host = "39.97.190.251"
     port = 3306
     username = "root"
     password = "123456"
