@@ -19,6 +19,7 @@ type Application struct {
 	AdmissionSchool string `gorm:"column:admission_shcool;type:varchar(255)" json:"admission_shcool" validate:"required" label:"录取院校"`
 	AdmissionMajor string `gorm:"column:admission_major;type:varchar(255)" json:"admission_major" validate:"required" label:"录取院校"`
 	IsAdmitted bool `gorm:"column:is_admitted;" json:"is_admitted" label:"录取结果"`
+	IsMatched bool `gorm:"column:is_matched;" json:"is_matched" label:"是否双选"`
 	CreatedAt time.Time `gorm:"type:timestamp"`
 	UpdatedAt time.Time `gorm:"type:timestamp"`
 	DeletedAt *time.Time `sql:"index" gorm:"type:timestamp"`
@@ -78,10 +79,22 @@ func (a *Application) UpdateMentorUserID(userID, mentorUserID string) error {
 		Error
 }
 
-func (a *Application) Dissolve(userID string) error {
+func (a *Application) UpdateMatchStatus(userID string, status int) error {
 	return extension.DB.
 		Table(a.TableName()).
 		Where("user_id = ?", userID).
-		Update("mentor_user_id", "").
+		Update("is_matched", status).
+		Error
+}
+
+func (a *Application) Dissolve(userID string) error {
+	info := map[string]interface{}{
+		"mentor_user_id":"",
+		"is_matched":0,
+	}
+	return extension.DB.
+		Table(a.TableName()).
+		Where("user_id = ?", userID).
+		Updates(info).
 		Error
 }

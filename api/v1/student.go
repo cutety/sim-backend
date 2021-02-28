@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"sim-backend/models/common"
 	"sim-backend/service/student"
+	"sim-backend/service/user"
 	"sim-backend/utils"
 )
 
@@ -81,5 +82,21 @@ func GetStudent(c *gin.Context) {
 	stuID := c.Query("stu_id")
 	service := student.GetStudentByStuIDService{}
 	response := service.GetStudentByStuID(stuID)
+	c.JSON(200, response)
+}
+
+// @Summary 学生选老师
+// @Tags Student
+// @Accept json
+// @Produce json
+// @Param user_id query string true "学生user_id"
+// @Param mentor_user_id query string true "导师user_id"
+// @Success 200 {object} common.Response
+// @Router /student/bind/mentor [get]
+func ChooseMentor(c *gin.Context) {
+	userID := c.Query("user_id")
+	mentorUserID := c.Query("mentor_user_id")
+	service := user.ChooseMentorService{}
+	response := service.ChooseMentor(userID, mentorUserID)
 	c.JSON(200, response)
 }

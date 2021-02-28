@@ -1,5 +1,9 @@
 package common
 
+const (
+	IS_MATCHED = 1
+)
+
 type LoginResponse struct {
 	Status int `json:"status"`
 	Msg string `json:"msg"`

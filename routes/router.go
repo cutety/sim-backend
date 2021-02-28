@@ -47,6 +47,7 @@ func InitRouter() {
 		mentor.GET("mentor/match", v1.GetMentorMatchingResult)
 		mentor.GET("mentor/student/mentored", v1.ListMentoredStudents)
 		mentor.PUT("mentor/info", v1.UpdateMentor)
+		mentor.GET("mentor/bind/student", v1.ChooseStudent)
 	}
 
 	// 管理员权限

@@ -91,23 +91,9 @@ func CreateUser(c *gin.Context) {
 	}
 }
 
-// @Summary 师生互选
-// @Tags User
-// @Accept json
-// @Produce json
-// @Param user_id query string true "学生user_id"
-// @Param mentor_user_id query string true "导师user_id"
-// @Success 200 {object} common.Response
-// @Router /user/bind/mentor [get]
-func ChooseMentor(c *gin.Context) {
-	userID := c.Query("user_id")
-	mentorUserID := c.Query("mentor_user_id")
-	service := user.ChooseMentorService{}
-	response := service.ChooseMentor(userID, mentorUserID)
-	c.JSON(200, response)
-}
 
-// @Summary 师生互选
+
+// @Summary 解除关系
 // @Tags User
 // @Accept json
 // @Produce json

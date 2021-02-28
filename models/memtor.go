@@ -91,6 +91,7 @@ func (*Mentor) GetMatchingResult(pagination *common.Pagination, userID string) (
 		WHERE 
 			m.user_id = ?
 			AND a.mentor_user_id = ''
+			AMD a.is_matched = 1
 `
 
 	total = extension.DB.Raw(sql, userID).Scan(&result).RowsAffected
@@ -119,7 +120,9 @@ func (*Mentor) ListMentoredStudents(pagination *common.Pagination, userID string
 			mentors m 
 			on a.mentor_user_id = m.user_id
 		WHERE 
-			m.user_id = ?`
+			m.user_id = ?
+			AND a.is_matched = 1
+`
 	total = extension.DB.Raw(sql, userID).Scan(&apps).RowsAffected
 	err := extension.DB.Raw(sql+`
 		LIMIT ? OFFSET ? 
