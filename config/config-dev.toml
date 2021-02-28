@@ -5,7 +5,7 @@ version = "latest"
 name = "sim"
 debug = true
 mode = "debug"
-jwtKey="xx"
+jwtKey="xxx"
 [extensions]
 [extensions.mysql]
 host = "127.0.0.1"
