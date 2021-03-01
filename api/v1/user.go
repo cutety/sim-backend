@@ -137,3 +137,17 @@ func DualSelect(c *gin.Context) {
 		c.JSON(200, common.Response{Error: err.Error()})
 	}
 }
+
+func ListAllMentors(c *gin.Context) {
+	service := &user.ListAllMentorService{}
+	mentors, total, err := service.ListAllMentor()
+	if err != nil {
+		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
+	} else {
+		c.JSON(200, utils.Response(utils.SUCCESS, common.DataList{
+			Items: mentors,
+			Total: total,
+		}))
+	}
+
+}

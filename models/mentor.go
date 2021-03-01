@@ -143,6 +143,15 @@ func (*Mentor) ListMentors(pagination *common.Pagination) ([]Mentor, int64, erro
 	return apps, total, err
 }
 
+func (*Mentor) ListAllMentors() ([]Mentor, int64, error) {
+	var apps []Mentor
+	var total int64
+	err := extension.DB.
+		Find(&apps).
+		Count(&total).Error
+	return apps, total, err
+}
+
 func (*Mentor) UpdateMentorByUserID(userID string, info *Mentor) error {
 	return extension.DB.Model(&info).Where("user_id = ?", userID).Updates(&info).Error
 }

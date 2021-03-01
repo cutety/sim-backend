@@ -36,7 +36,7 @@ func InitRouter() {
 		auth.GET("user/info", v1.GetUserByUserID)
 		auth.GET("student/info", v1.GetStudent)
 		auth.PUT("user/dual/select", v1.DualSelect)
-		auth.GET("user/list/mentor", v1.ListMentors)
+		auth.GET("user/list/mentor", v1.ListAllMentors)
 		auth.POST("student/application", v1.CreateApplication)
 	}
 

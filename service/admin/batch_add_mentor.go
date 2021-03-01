@@ -7,6 +7,7 @@ import (
 	"sim-backend/extension"
 	"sim-backend/models"
 	"sim-backend/models/common"
+	"sim-backend/service/user"
 	"sim-backend/utils"
 	"sim-backend/utils/logger"
 )
@@ -55,6 +56,12 @@ func (*BatchAddMentorService) BatchAddMentor(r io.Reader) common.Response {
 		mentor.GraduateMajor = row[11]
 		mentor.PHDSchool = row[12]
 		mentor.PHDMajor = row[13]
+		createUserService := user.CreateUserService{
+			UserID:   mentor.UserID,
+			Username: mentor.Name,
+			Password: mentor.UserID[len(mentor.UserID)-6:],
+			Role:     3,
+		}
 		err := models.MMentor.Create(mentor)
 		if err != nil {
 			if extension.IsMySQLDuplicateEntryError(err) {
@@ -67,6 +74,7 @@ func (*BatchAddMentorService) BatchAddMentor(r io.Reader) common.Response {
 				result[index].Msg = fmt.Sprintf("导入失败：%s", err.Error())
 			}
 		} else {
+			_ = createUserService.CreateUser()
 			result[index].Status = 0
 			result[index].UserID = mentor.UserID
 			result[index].Msg = "导入成功"

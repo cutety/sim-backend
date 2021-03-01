@@ -4,6 +4,7 @@ import (
 	"sim-backend/extension"
 	"sim-backend/models"
 	"sim-backend/models/common"
+	"sim-backend/service/user"
 	"sim-backend/utils"
 	"sim-backend/utils/logger"
 )
@@ -46,6 +47,13 @@ func (service *CreateMentorService) CreateMentor() common.Response {
 		PHDMajor:                service.PHDMajor,
 	}
 	err := models.MMentor.Create(mentor)
+	createUserService := user.CreateUserService{
+		UserID:   mentor.UserID,
+		Username: mentor.Name,
+		Password: mentor.UserID[len(mentor.UserID)-6:],
+		Role:     3,
+	}
+	_ = createUserService.CreateUser()
 	// 处理Duplicate key error
 	if err != nil {
 		if extension.IsMySQLDuplicateEntryError(err) {
