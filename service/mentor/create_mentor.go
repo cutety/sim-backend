@@ -1,9 +1,11 @@
 package mentor
 
 import (
+	"sim-backend/extension"
 	"sim-backend/models"
 	"sim-backend/models/common"
 	"sim-backend/utils"
+	"sim-backend/utils/logger"
 )
 
 type CreateMentorService struct {
@@ -44,7 +46,12 @@ func (service *CreateMentorService) CreateMentor() common.Response {
 		PHDMajor:                service.PHDMajor,
 	}
 	err := models.MMentor.Create(mentor)
+	// 处理Duplicate key error
 	if err != nil {
+		if extension.IsMySQLDuplicateEntryError(err) {
+			logger.Info("Duplicate Key")
+			return utils.Response(utils.DUPLICATE_ENTRY_ERROR, err)
+		}
 		return utils.Response(utils.ERROR, err)
 	} else {
 		return utils.Response(utils.SUCCESS, nil)

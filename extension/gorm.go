@@ -2,11 +2,26 @@ package extension
 
 import (
 	"fmt"
+	"github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/spf13/viper"
 	"sim-backend/utils/logger"
 )
+
+const (
+	MySQLError_DuplicateEntry = 1062
+)
+
+func IsMySQLDuplicateEntryError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	sqlErr, ok := err.(*mysql.MySQLError)
+	// 唯一索引冲突错误
+	return ok && sqlErr.Number == MySQLError_DuplicateEntry
+}
 
 var DB *gorm.DB
 

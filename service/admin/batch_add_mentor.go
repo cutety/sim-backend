@@ -1,16 +1,23 @@
 package admin
 
 import (
+	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"io"
+	"sim-backend/extension"
 	"sim-backend/models"
 	"sim-backend/models/common"
 	"sim-backend/utils"
 	"sim-backend/utils/logger"
 )
 
-type BatchAddMentorService struct{
+type BatchAddMentorService struct {
+}
 
+type Message struct {
+	Status int `json:"status"`
+	UserID string `json:"user_id"`
+	Msg    string `json:"msg"`
 }
 
 func (*BatchAddMentorService) BatchAddMentor(r io.Reader) common.Response {
@@ -26,14 +33,15 @@ func (*BatchAddMentorService) BatchAddMentor(r io.Reader) common.Response {
 		return utils.ResponseWithError(utils.ERROR, err)
 	}
 	logger.Info("rows is :", rows)
-	for _, row := range rows[1:] {
+	result := make([]Message, len(rows[1:]))
+	for index, row := range rows[1:] {
 		mentor := &models.Mentor{}
 		mentor.UserID = row[14]
 		mentor.Name = row[0]
 		if row[1] == "女" {
 			mentor.Gender = 0
 		} else {
-			mentor.Gender= 1
+			mentor.Gender = 1
 		}
 		mentor.Phone = row[2]
 		mentor.Email = row[3]
@@ -49,9 +57,21 @@ func (*BatchAddMentorService) BatchAddMentor(r io.Reader) common.Response {
 		mentor.PHDMajor = row[13]
 		err := models.MMentor.Create(mentor)
 		if err != nil {
-			return utils.ResponseWithError(500, err)
+			if extension.IsMySQLDuplicateEntryError(err) {
+				result[index].Status = 1
+				result[index].UserID = mentor.UserID
+				result[index].Msg = "导入失败，重复导入"
+			} else {
+				result[index].Status = 1
+				result[index].UserID = mentor.UserID
+				result[index].Msg = fmt.Sprintf("导入失败：%s", err.Error())
+			}
+		} else {
+			result[index].Status = 0
+			result[index].UserID = mentor.UserID
+			result[index].Msg = "导入成功"
 		}
 	}
-	return utils.Response(200, nil)
-}
 
+	return utils.Response(200, result)
+}

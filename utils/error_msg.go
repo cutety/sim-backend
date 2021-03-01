@@ -4,7 +4,8 @@ import "sim-backend/models/common"
 
 const (
 	SUCCESS = 200
-	ERROR   = 500
+	DUPLICATE_ENTRY_ERROR   = 500
+	ERROR   = 501
 
 	ERROR_PASSWORD_WRONG   = 1001
 	ERROR_TOKEN_EXIST      = 1002
@@ -30,6 +31,8 @@ var errorMsgMap = map[int]string{
 	ERROR_USER_EXIST:       "用户不存在",
 	ERROR_PASSWORD_MATCH:"原密码不正确",
 	ERROR_APPLICATION_EXIST:"志愿信息未填报",
+	DUPLICATE_ENTRY_ERROR  :"重复导入，请检查学工号是否冲突",
+
 }
 
 func GetErrMsg(code int) string {
