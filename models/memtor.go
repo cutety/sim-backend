@@ -69,6 +69,7 @@ type MentorMatchingResult struct {
 	AdmissionSchool   string  `gorm:"column:admission_shcool;type:varchar(255)" json:"admission_shcool" validate:"required" label:"录取院校"`
 	AdmissionMajor    string  `gorm:"column:admission_major;type:varchar(255)" json:"admission_major" validate:"required" label:"录取院校"`
 	IsAdmitted        bool    `gorm:"column:is_admitted;type:tinyint(1)" json:"is_admitted" label:"录取结果"`
+	Note string `gorm:"column:note;" json:"note" label:"留言"`
 }
 
 func (*Mentor) GetMatchingResult(pagination *common.Pagination, userID string) ([]MentorMatchingResult, int64, error) {
@@ -110,7 +111,7 @@ func (*Mentor) ListStudentByMatchingStatus(pagination *common.Pagination, userID
 	sql := `
 		SELECT
 			s.stu_name, s.gender, s.grade, s.admission_major as major, s.phone as phone, s.email as email, s.wechat as wechat, s.qq as qq, 
-			a.user_id, a.apply_school, a.mentor_user_id, a.apply_school, a.apply_major, a.preliminiary_result, a.retrail_result, a.admission_shcool, a.admission_major, a.is_admitted
+			a.user_id, a.apply_school, a.mentor_user_id, a.apply_school, a.apply_major, a.preliminiary_result, a.retrail_result, a.admission_shcool, a.admission_major, a.is_admitted, a.note
 		FROM
 			application a
 		left join
