@@ -40,6 +40,33 @@ func GetApplyMatchingResult(c *gin.Context) {
 	c.JSON(200, response)
 }
 
+// @Summary 获取学生列表
+// @Tags Student
+// @Accept json
+// @Produce json
+// @Param pagination.page query string false "page"
+// @Param pagination.limit query string false "limit"
+// @Param stu_name query string false "学生姓名"
+// @Param grade query string false "年级"
+// @Param major query string false "专业"
+// @Success 200 {object} common.Response
+// @Router /student/detail [get]
+func ListStudentsDetail(c *gin.Context) {
+	pagination, _ := utils.Pagination(c)
+	service := student.ListStudentsDetailService{}
+	apps, total, err := service.ListStudentsDetail(pagination)
+	if err != nil {
+		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
+		return
+	}
+	list := common.DataList{
+		Items: apps,
+		Total: total,
+	}
+	c.JSON(200, utils.Response(utils.SUCCESS, list))
+
+}
+
 // @Summary 学生获取报考信息
 // @Tags Student
 // @Accept json

@@ -38,6 +38,7 @@ func InitRouter() {
 		auth.PUT("user/dual/select", v1.DualSelect)
 		auth.GET("user/list/mentor", v1.ListAllMentors)
 		auth.POST("student/application", v1.CreateApplication)
+		auth.GET("student/detail", v1.ListStudentsDetail)
 	}
 
 	//教师权限

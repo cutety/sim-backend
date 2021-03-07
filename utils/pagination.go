@@ -7,7 +7,7 @@ import (
 )
 
 func Pagination(c *gin.Context) (*common.Pagination,error) {
-	limit := c.DefaultQuery("page_size", "8")
+	limit := c.DefaultQuery("page_size", "5")
 	pageNumber := c.DefaultQuery("page_number", "1")
 	limitInt, err := strconv.Atoi(limit)
 	if err != nil || limitInt < 0 {

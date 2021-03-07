@@ -117,6 +117,44 @@ var doc = `{
                 }
             }
         },
+        "/mentor/bind/student": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Mentor"
+                ],
+                "summary": "老师选学生",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "学生user_id",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "导师user_id",
+                        "name": "mentor_user_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/mentor/info": {
             "get": {
                 "consumes": [
@@ -238,6 +276,36 @@ var doc = `{
                 }
             }
         },
+        "/mentor/student/request": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Mentor"
+                ],
+                "summary": "根据userID获取指导申请",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "导师的user_id",
+                        "name": "user_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/student/application": {
             "put": {
                 "consumes": [
@@ -290,6 +358,98 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/student.CreateApplicationService"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/bind/mentor": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "学生选老师",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "学生user_id",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "导师user_id",
+                        "name": "mentor_user_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/detail": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "获取学生列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "pagination.page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "pagination.limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "学生姓名",
+                        "name": "stu_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "专业",
+                        "name": "major",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -395,7 +555,7 @@ var doc = `{
                 }
             }
         },
-        "/user/bind/mentor": {
+        "/user/dissolve/mentor": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -406,19 +566,12 @@ var doc = `{
                 "tags": [
                     "User"
                 ],
-                "summary": "师生互选",
+                "summary": "解除关系",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "学生user_id",
                         "name": "user_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "导师user_id",
-                        "name": "mentor_user_id",
                         "in": "query",
                         "required": true
                     }
@@ -433,8 +586,8 @@ var doc = `{
                 }
             }
         },
-        "/user/dissolve/mentor": {
-            "get": {
+        "/user/dual/select": {
+            "put": {
                 "consumes": [
                     "application/json"
                 ],
@@ -444,14 +597,16 @@ var doc = `{
                 "tags": [
                     "User"
                 ],
-                "summary": "师生互选",
+                "summary": "师生双选",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "学生user_id",
-                        "name": "user_id",
-                        "in": "query",
-                        "required": true
+                        "description": "师生双选Request",
+                        "name": "application",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.UpdateApplicationService"
+                        }
                     }
                 ],
                 "responses": {
@@ -740,11 +895,20 @@ var doc = `{
                 "is_admitted": {
                     "type": "boolean"
                 },
+                "mentor_user_id": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
                 "preliminiary_result": {
                     "type": "number"
                 },
                 "retrail_result": {
                     "type": "number"
+                },
+                "status": {
+                    "type": "integer"
                 },
                 "user_id": {
                     "type": "string"
@@ -810,6 +974,26 @@ var doc = `{
             "properties": {
                 "password": {
                     "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.UpdateApplicationService": {
+            "type": "object",
+            "required": [
+                "user_id"
+            ],
+            "properties": {
+                "mentor_user_id": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
                 },
                 "user_id": {
                     "type": "string"

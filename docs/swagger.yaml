@@ -99,10 +99,16 @@ definitions:
         type: string
       is_admitted:
         type: boolean
+      mentor_user_id:
+        type: string
+      note:
+        type: string
       preliminiary_result:
         type: number
       retrail_result:
         type: number
+      status:
+        type: integer
       user_id:
         type: string
     type: object
@@ -147,6 +153,19 @@ definitions:
         type: string
       user_id:
         type: string
+    type: object
+  user.UpdateApplicationService:
+    properties:
+      mentor_user_id:
+        type: string
+      note:
+        type: string
+      status:
+        type: integer
+      user_id:
+        type: string
+    required:
+    - user_id
     type: object
 host: localhost:3000
 info:
@@ -212,6 +231,31 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 添加导师
+      tags:
+      - Mentor
+  /mentor/bind/student:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 学生user_id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      - description: 导师user_id
+        in: query
+        name: mentor_user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 老师选学生
       tags:
       - Mentor
   /mentor/info:
@@ -291,6 +335,25 @@ paths:
       summary: 导师根据userID获取所指导的学生信息
       tags:
       - Mentor
+  /mentor/student/request:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 导师的user_id
+        in: query
+        name: user_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根据userID获取指导申请
+      tags:
+      - Mentor
   /student/application:
     post:
       consumes:
@@ -330,6 +393,66 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 学生更新个人信息
+      tags:
+      - Student
+  /student/bind/mentor:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 学生user_id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      - description: 导师user_id
+        in: query
+        name: mentor_user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 学生选老师
+      tags:
+      - Student
+  /student/detail:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: page
+        in: query
+        name: pagination.page
+        type: string
+      - description: limit
+        in: query
+        name: pagination.limit
+        type: string
+      - description: 学生姓名
+        in: query
+        name: stu_name
+        type: string
+      - description: 年级
+        in: query
+        name: grade
+        type: string
+      - description: 专业
+        in: query
+        name: major
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 获取学生列表
       tags:
       - Student
   /student/info/:
@@ -391,31 +514,6 @@ paths:
       summary: 学生获取报考信息
       tags:
       - Student
-  /user/bind/mentor:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: 学生user_id
-        in: query
-        name: user_id
-        required: true
-        type: string
-      - description: 导师user_id
-        in: query
-        name: mentor_user_id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/common.Response'
-      summary: 师生互选
-      tags:
-      - User
   /user/dissolve/mentor:
     get:
       consumes:
@@ -433,7 +531,28 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/common.Response'
-      summary: 师生互选
+      summary: 解除关系
+      tags:
+      - User
+  /user/dual/select:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 师生双选Request
+        in: body
+        name: application
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateApplicationService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 师生双选
       tags:
       - User
   /user/info/:user_id:
