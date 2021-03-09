@@ -306,6 +306,37 @@ var doc = `{
                 }
             }
         },
+        "/student/admission/history": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "学生选老师",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "学生user_id",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/student/application": {
             "put": {
                 "consumes": [

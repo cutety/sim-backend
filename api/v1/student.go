@@ -130,3 +130,26 @@ func ChooseMentor(c *gin.Context) {
 	response := service.ChooseMentor(userID, mentorUserID)
 	c.JSON(200, response)
 }
+
+// @Summary 查看历史录取记录
+// @Tags Student
+// @Accept json
+// @Produce json
+// @Param user_id query string true "学生user_id"
+// @Success 200 {object} common.Response
+// @Router /student/admission/history [get]
+func ListMatchedAdmittedStudents(c *gin.Context) {
+	pagination, _ := utils.Pagination(c)
+	userID := c.Query("user_id")
+	service := student.ListMatchedAdmittedStudentsService{}
+	students, total, err := service.ListMatchedAdmittedStudents(userID, pagination)
+	if err != nil {
+		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
+		return
+	}
+	list := common.DataList{
+		Items: students,
+		Total: total,
+	}
+	c.JSON(200, utils.Response(utils.SUCCESS, list))
+}

@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"sim-backend/extension"
+	"sim-backend/models/common"
 	"time"
 )
 
@@ -114,4 +115,46 @@ func (a *Application) UpdateApplication(app *Application) error {
 		Where("user_id = ?", data["user_id"]).
 		Update(data).
 		Error
+}
+
+type MatchedAdmittedStudents struct {
+	StuName string `gorm:"stu_name" json:"stu_name"`
+	StuID string `gorm:"stu_id" json:"stu_id"`
+	Phone string `gorm:"phone" json:"phone"`
+	Wechat string `gorm:"wechat" json:"wechat"`
+	QQ string `gorm:"qq" json:"qq"`
+	AdmissionSchool string `gorm:"admission_school" json:"admission_school"`
+	AdmissionMajor string `gorm:"admission_major" json:"admission_major"`
+}
+
+func (*Application) ListMatchedAdmittedStudents(userID string, pagination * common.Pagination) ([]MatchedAdmittedStudents, int64, error) {
+	var apps []MatchedAdmittedStudents
+	sql := `
+	SELECT 
+	s.stu_name, s.stu_id, s.phone, s.wechat, s.email, s.qq,
+	a.admission_school, a.admission_major
+	FROM	
+		students s
+	LEFT JOIN
+		application a
+		ON a.user_id = s.stu_id
+	RIGHT JOIN 
+		(
+			SELECT 
+				*
+			FROM
+			application a
+			WHERE a.user_id = ?
+		) ap
+		ON ap.apply_school = a.admission_school
+`
+	total := extension.DB.Raw(sql, userID).Scan(&apps).RowsAffected
+	paginationSQL := `
+	LIMIT ? OFFSET ?
+`
+	err := extension.DB.Raw(sql+paginationSQL, userID, pagination.Limit, (pagination.Page - 1) * pagination.Limit).Scan(&apps).Error
+	if err != nil {
+		return nil, 0, err
+	}
+	return apps, total, err
 }

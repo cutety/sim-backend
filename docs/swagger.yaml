@@ -354,6 +354,26 @@ paths:
       summary: 根据userID获取指导申请
       tags:
       - Mentor
+  /student/admission/history:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 学生user_id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 学生选老师
+      tags:
+      - Student
   /student/application:
     post:
       consumes:
