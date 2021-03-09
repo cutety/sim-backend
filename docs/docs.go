@@ -883,7 +883,7 @@ var doc = `{
                 "admission_major": {
                     "type": "string"
                 },
-                "admission_shcool": {
+                "admission_school": {
                     "type": "string"
                 },
                 "apply_major": {
@@ -901,7 +901,7 @@ var doc = `{
                 "note": {
                     "type": "string"
                 },
-                "preliminiary_result": {
+                "preliminary_result": {
                     "type": "number"
                 },
                 "retrail_result": {

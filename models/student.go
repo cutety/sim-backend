@@ -59,22 +59,22 @@ type StudentDetail struct {
 	MentorName string `gorm:"column:mentor_name;type:varchar(20);" json:"mentor_name" label:"导师姓名"`
 	ApplySchool       string  `gorm:"column:apply_school;type:varchar(255)" json:"apply_school" validate:"required" label:"报考院校"`
 	ApplyMajor        string  `gorm:"column:apply_major;type:varchar(255)" json:"apply_major" validate:"required" label:"报考专业"`
-	PreliminaryResult float32 `gorm:"column:preliminiary_result;type:decimal(11,2)" json:"preliminiary_result" label:"初试成绩"`
+	PreliminaryResult float32 `gorm:"column:preliminary_result;type:decimal(11,2)" json:"preliminary_result" label:"初试成绩"`
 	RetrailResult     float32 `gorm:"column:retrail_result;type:decimal(11,2)" json:"retrail_result" label:"复试成绩"`
-	AdmissionSchool   string  `gorm:"column:admission_shcool;type:varchar(255)" json:"admission_shcool" validate:"required" label:"录取院校"`
+	AdmissionSchool   string  `gorm:"column:admission_school;type:varchar(255)" json:"admission_school" validate:"required" label:"录取院校"`
 	AdmissionMajor    string  `gorm:"column:admission_major;type:varchar(255)" json:"admission_major" validate:"required" label:"录取院校"`
 	IsAdmitted        bool    `gorm:"column:is_admitted;type:tinyint(1)" json:"is_admitted" label:"录取结果"`
 }
 
-func (s *Student) GetDetailByStuID(pagination *common.Pagination) ([]StudentDetail, int64, error) {
+func (s *Student) GetDetailByStuID(stuName string, gender int, grade string, major string, pagination *common.Pagination) ([]StudentDetail, int64, error) {
 	var total int64
 	var apps []StudentDetail
 	sql := `
 			SELECT 
 				s.stu_id as user_id, s.stu_name as stu_name, s.gender as gender, s.grade as grade, s.admission_major as major,
 				s.qq as qq, s.phone as phone, s.email as email, s.wechat as wechat, a.mentor_user_id as mentor_user_id, m.name as mentor_name,
-				a.apply_school as apply_school, a.apply_major as apply_major, a.preliminiary_result as preliminiary_result,
-				a.retrail_result as retrail_result, a.admission_shcool as admission_shcool, a.admission_major as admission_major,
+				a.apply_school as apply_school, a.apply_major as apply_major, a.preliminary_result as preliminary_result,
+				a.retrail_result as retrail_result, a.admission_school as admission_school, a.admission_major as admission_major,
 				a.is_admitted as is_admitted
 			FROM
 				students s
@@ -85,8 +85,38 @@ func (s *Student) GetDetailByStuID(pagination *common.Pagination) ([]StudentDeta
 				mentors m
 					ON m.user_id = a.mentor_user_id
 `
-	total = extension.DB.Raw(sql).Scan(&apps).RowsAffected
-	err := extension.DB.Raw(sql+`LIMIT ? OFFSET ?`, pagination.Limit, (pagination.Page - 1) * pagination.Limit).
+	var whereParams []interface{}
+	whereSQL := `
+		WHERE	1 = 1
+`
+	if stuName != "" {
+		whereSQL += `
+			AND s.stu_name like ?
+`
+		whereParams = append(whereParams, "%"+stuName+"%")
+	}
+	if gender != -1 {
+		whereSQL += `
+			AND s.gender = ?
+`
+		whereParams = append(whereParams, gender)
+	}
+	if grade != "" {
+		whereSQL += `
+			AND s.grade = ?
+`
+		whereParams = append(whereParams, grade)
+	}
+	if major != "" {
+		whereSQL += `
+			AND s.admission_major = ?
+`
+		whereParams = append(whereParams, major)
+	}
+	total = extension.DB.Raw(sql+whereSQL, whereParams... ).Scan(&apps).RowsAffected
+	whereParams = append(whereParams, pagination.Limit)
+	whereParams = append(whereParams, (pagination.Page - 1) * pagination.Limit)
+	err := extension.DB.Raw(sql+whereSQL+`LIMIT ? OFFSET ?`, whereParams...).
 		Scan(&apps).Error
 	if err != nil {
 		return nil, 0, err

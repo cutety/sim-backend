@@ -867,7 +867,7 @@
                 "admission_major": {
                     "type": "string"
                 },
-                "admission_shcool": {
+                "admission_school": {
                     "type": "string"
                 },
                 "apply_major": {
@@ -885,7 +885,7 @@
                 "note": {
                     "type": "string"
                 },
-                "preliminiary_result": {
+                "preliminary_result": {
                     "type": "number"
                 },
                 "retrail_result": {

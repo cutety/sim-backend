@@ -54,17 +54,20 @@ func GetApplyMatchingResult(c *gin.Context) {
 func ListStudentsDetail(c *gin.Context) {
 	pagination, _ := utils.Pagination(c)
 	service := student.ListStudentsDetailService{}
-	apps, total, err := service.ListStudentsDetail(pagination)
-	if err != nil {
+	if err := c.BindQuery(&service); err == nil {
+		apps, total, err := service.ListStudentsDetail(pagination)
+		if err != nil {
+			c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
+			return
+		}
+		list := common.DataList{
+			Items: apps,
+			Total: total,
+		}
+		c.JSON(200, utils.Response(utils.SUCCESS, list))
+	} else {
 		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
-		return
 	}
-	list := common.DataList{
-		Items: apps,
-		Total: total,
-	}
-	c.JSON(200, utils.Response(utils.SUCCESS, list))
-
 }
 
 // @Summary 学生获取报考信息

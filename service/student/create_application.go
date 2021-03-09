@@ -12,9 +12,9 @@ type CreateApplicationService struct {
 	MentorUserID      string  `gorm:"column:mentor_user_id;type:varchar(20)" json:"mentor_user_id" label:"导师用户ID"`
 	ApplySchool       string  `form:"apply_school" json:"apply_school"`
 	ApplyMajor        string  `form:"apply_major" json:"apply_major" `
-	PreliminaryResult float32 `form:"preliminiary_result" json:"preliminiary_result"`
+	PreliminaryResult float32 `form:"preliminary_result" json:"preliminary_result"`
 	RetrailResult     float32 `form:"retrail_result" json:"retrail_result"`
-	AdmissionSchool   string  `form:"admission_shcool" json:"admission_shcool"`
+	AdmissionSchool   string  `form:"admission_school" json:"admission_school"`
 	AdmissionMajor    string  `form:"admission_major" json:"admission_major"`
 	IsAdmitted        bool    `form:"is_admitted" json:"is_admitted"`
 	Status            int     `gorm:"column:status;" json:"status" label:"匹配情况"`
