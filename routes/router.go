@@ -25,7 +25,7 @@ func InitRouter() {
 	{
 		//auth.GET("user/info/:user_id", v1.GetUserByUserID)
 		auth.PUT("user/password", v1.ChangePassword)
-		auth.POST("mentor", v1.CreateMemtor)
+		auth.POST("mentor", v1.CreateMentor)
 		auth.GET("user/match/mentor", v1.GetApplyMatchingResult)
 		auth.GET("user/bind/mentor", v1.ChooseMentor)
 		auth.GET("info/me", v1.GetInfo)
@@ -72,7 +72,10 @@ func InitRouter() {
 		router.POST("user/login", v1.Login)
 		router.POST("user", v1.CreateUser)
 		router.POST("upload", v1.UpLoad)
+		router.POST("checkin/new", v1.StudentCheckin)
+		router.GET("checkin/amount", v1.GetCheckinAmount)
 	}
+
 
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

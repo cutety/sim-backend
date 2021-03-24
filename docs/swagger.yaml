@@ -1,5 +1,14 @@
 basePath: /api/v1
 definitions:
+  checkin.CheckinService:
+    properties:
+      major:
+        type: string
+      stu_id:
+        type: string
+      stu_name:
+        type: string
+    type: object
   common.Response:
     properties:
       data:
@@ -198,6 +207,27 @@ paths:
       summary: 批量添加导师
       tags:
       - Admin
+  /checkin/new:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 报道信息
+        in: body
+        name: CheckinInfo
+        required: true
+        schema:
+          $ref: '#/definitions/checkin.CheckinService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 新生报到
+      tags:
+      - Checkin
   /info/me:
     get:
       consumes:
@@ -371,7 +401,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/common.Response'
-      summary: 学生选老师
+      summary: 查看历史录取记录
       tags:
       - Student
   /student/application:

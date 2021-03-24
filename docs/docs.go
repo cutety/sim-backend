@@ -62,6 +62,39 @@ var doc = `{
                 }
             }
         },
+        "/checkin/new": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "新生报到",
+                "parameters": [
+                    {
+                        "description": "报道信息",
+                        "name": "CheckinInfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/checkin.CheckinService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/info/me": {
             "get": {
                 "consumes": [
@@ -317,7 +350,7 @@ var doc = `{
                 "tags": [
                     "Student"
                 ],
-                "summary": "学生选老师",
+                "summary": "查看历史录取记录",
                 "parameters": [
                     {
                         "type": "string",
@@ -779,6 +812,20 @@ var doc = `{
         }
     },
     "definitions": {
+        "checkin.CheckinService": {
+            "type": "object",
+            "properties": {
+                "major": {
+                    "type": "string"
+                },
+                "stu_id": {
+                    "type": "string"
+                },
+                "stu_name": {
+                    "type": "string"
+                }
+            }
+        },
         "common.Response": {
             "type": "object",
             "properties": {

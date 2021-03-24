@@ -16,7 +16,7 @@ import (
 // @Param mentor body mentor.CreateMentorService true "导师的个人信息"
 // @Success 200 {object} common.Response
 // @Router /mentor [post]
-func CreateMemtor(c *gin.Context) {
+func CreateMentor(c *gin.Context) {
 	var service mentor.CreateMentorService
 	if err := c.ShouldBindJSON(&service); err == nil {
 		msg, code := validator.Validate(&service)
