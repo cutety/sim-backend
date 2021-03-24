@@ -51,7 +51,7 @@ func InitRouter() {
 
 		mentor.GET("mentor/match", v1.GetMentorMatchingResult)
 		mentor.GET("mentor/student/mentored", v1.ListMentoredStudents)
-		mentor.GET("/mentor/student/request", v1.ListInstructRequest)
+		mentor.GET("mentor/student/request", v1.ListInstructRequest)
 		mentor.PUT("mentor/info", v1.UpdateMentor)
 		mentor.GET("mentor/bind/student", v1.ChooseStudent)
 	}
