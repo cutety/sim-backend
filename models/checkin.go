@@ -37,10 +37,3 @@ func (c *CheckinInfo) GetCheckinAmountByGrade(grade string) (int64, error) {
 	err := extension.DB.Table(c.TableName()).Where("stu_id like ? and checkin_status = 1", val).Count(&total).Error
 	return total, err
 }
-
-func (c *CheckinInfo) GetMaleAndFemaleAmount(grade string) (int64, error) {
-	var total int64
-	val := fmt.Sprintf("%s%%", grade)
-	err := extension.DB.Table(c.TableName()).Where("stu_id like ?", val).Count(&total).Error
-	return total, err
-}

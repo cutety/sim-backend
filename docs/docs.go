@@ -62,6 +62,31 @@ var doc = `{
                 }
             }
         },
+        "/age/distribution/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取年龄分布",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/checkin/new": {
             "post": {
                 "consumes": [
@@ -81,8 +106,36 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/checkin.CheckinService"
+                            "$ref": "#/definitions/checkin.NewStudentCheckinService"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/gender/amount/{grade}": {
+            "get": {
+                "consumes": [
+                    "application/x-json-stream"
+                ],
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "男生女生数量",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -556,6 +609,106 @@ var doc = `{
                 }
             }
         },
+        "/students/amount/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取学生人数",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/firstname/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取姓排行",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/info/table/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取学生信息轮播表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/province/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取省份信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "post": {
                 "consumes": [
@@ -683,7 +836,7 @@ var doc = `{
                 }
             }
         },
-        "/user/info/:user_id": {
+        "/user/info": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -812,8 +965,13 @@ var doc = `{
         }
     },
     "definitions": {
-        "checkin.CheckinService": {
+        "checkin.NewStudentCheckinService": {
             "type": "object",
+            "required": [
+                "major",
+                "stu_id",
+                "stu_name"
+            ],
             "properties": {
                 "major": {
                     "type": "string"

@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Param user_id query string true "user_id"
 // @Success 200 {object} common.Response
-// @Router /user/info/:user_id [get]
+// @Router /user/info [get]
 func GetUserByUserID(c *gin.Context) {
 	userID := c.Query("user_id")
 	service := user.GetUserByUserIDService{}

@@ -1,6 +1,6 @@
 basePath: /api/v1
 definitions:
-  checkin.CheckinService:
+  checkin.NewStudentCheckinService:
     properties:
       major:
         type: string
@@ -8,6 +8,10 @@ definitions:
         type: string
       stu_name:
         type: string
+    required:
+    - major
+    - stu_id
+    - stu_name
     type: object
   common.Response:
     properties:
@@ -207,6 +211,22 @@ paths:
       summary: 批量添加导师
       tags:
       - Admin
+  /age/distribution/{grade}:
+    get:
+      parameters:
+      - description: 年级
+        in: path
+        name: grade
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根据年级获取年龄分布
+      tags:
+      - Checkin
   /checkin/new:
     post:
       consumes:
@@ -217,7 +237,7 @@ paths:
         name: CheckinInfo
         required: true
         schema:
-          $ref: '#/definitions/checkin.CheckinService'
+          $ref: '#/definitions/checkin.NewStudentCheckinService'
       produces:
       - application/json
       responses:
@@ -226,6 +246,24 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 新生报到
+      tags:
+      - Checkin
+  /gender/amount/{grade}:
+    get:
+      consumes:
+      - application/x-json-stream
+      parameters:
+      - description: 年级
+        in: path
+        name: grade
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 男生女生数量
       tags:
       - Checkin
   /info/me:
@@ -524,6 +562,70 @@ paths:
       summary: 获取学生信息
       tags:
       - Student
+  /students/amount/{grade}:
+    get:
+      parameters:
+      - description: 年级
+        in: path
+        name: grade
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根据年级获取学生人数
+      tags:
+      - Checkin
+  /students/firstname/{grade}:
+    get:
+      parameters:
+      - description: 年级
+        in: path
+        name: grade
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根据年级获取姓排行
+      tags:
+      - Checkin
+  /students/info/table/{grade}:
+    get:
+      parameters:
+      - description: 年级
+        in: path
+        name: grade
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根据年级获取学生信息轮播表
+      tags:
+      - Checkin
+  /students/province/{grade}:
+    get:
+      parameters:
+      - description: 年级
+        in: path
+        name: grade
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根据年级获取省份信息
+      tags:
+      - Checkin
   /user:
     post:
       consumes:
@@ -605,7 +707,7 @@ paths:
       summary: 师生双选
       tags:
       - User
-  /user/info/:user_id:
+  /user/info:
     get:
       consumes:
       - application/json
