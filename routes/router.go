@@ -72,17 +72,18 @@ func InitRouter() {
 		router.POST("user/login", v1.Login)
 		router.POST("user", v1.CreateUser)
 		router.POST("upload", v1.UpLoad)
-		router.POST("checkin/new", v1.StudentCheckin)
-		router.GET("checkin/amount", v1.GetCheckinAmount)
-		router.GET("gender/amount/:grade", v1.GetMaleAndFemaleAmount)
+		router.POST("students/checkin/new", v1.StudentCheckin)
+		router.GET("students/checkin/amount/:grade", v1.GetCheckinAmount)
+		router.GET("students/gender/amount/:grade", v1.GetMaleAndFemaleAmount)
 		router.GET("students/amount/:grade", v1.GetStudentsAmountByGrade)
-		router.GET("age/distribution/:grade", v1.GetAgeDistribution)
+		router.GET("students/age/distribution/:grade", v1.GetAgeDistribution)
 		router.GET("students/info/table/:grade", v1.GetStudentsInfoTable)
 		router.GET("students/province/:grade", v1.GetStudentsProvince)
 		router.GET("students/firstname/:grade", v1.GetFirstnameByGrade)
 		router.GET("students/same/name/:grade", v1.GetSameNameByGrade)
 		router.GET("students/same/birthday/:grade", v1.GetSameBirthdayByGrade)
 		router.GET("students/major/rank/:grade", v1.GetMajorRankByGrade)
+		router.GET("students/chekcin/info/:grade", v1.GetCheckinInfoByGrade)
 	}
 
 

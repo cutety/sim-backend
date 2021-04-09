@@ -62,92 +62,6 @@ var doc = `{
                 }
             }
         },
-        "/age/distribution/{grade}": {
-            "get": {
-                "tags": [
-                    "Checkin"
-                ],
-                "summary": "根据年级获取年龄分布",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "年级",
-                        "name": "grade",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/checkin/new": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Checkin"
-                ],
-                "summary": "新生报到",
-                "parameters": [
-                    {
-                        "description": "报道信息",
-                        "name": "CheckinInfo",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/checkin.NewStudentCheckinService"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/gender/amount/{grade}": {
-            "get": {
-                "consumes": [
-                    "application/x-json-stream"
-                ],
-                "tags": [
-                    "Checkin"
-                ],
-                "summary": "男生女生数量",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "年级",
-                        "name": "grade",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/info/me": {
             "get": {
                 "consumes": [
@@ -609,6 +523,31 @@ var doc = `{
                 }
             }
         },
+        "/students/age/distribution/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取年龄分布",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/students/amount/{grade}": {
             "get": {
                 "tags": [
@@ -634,12 +573,98 @@ var doc = `{
                 }
             }
         },
+        "/students/checkin/info/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取报道信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/checkin/new": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "新生报到",
+                "parameters": [
+                    {
+                        "description": "报道信息",
+                        "name": "CheckinInfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/checkin.NewStudentCheckinService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/students/firstname/{grade}": {
             "get": {
                 "tags": [
                     "Checkin"
                 ],
                 "summary": "根据年级获取姓排行",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/gender/amount/{grade}": {
+            "get": {
+                "consumes": [
+                    "application/x-json-stream"
+                ],
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "男生女生数量",
                 "parameters": [
                     {
                         "type": "string",
@@ -684,12 +709,87 @@ var doc = `{
                 }
             }
         },
+        "/students/major/rank/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取专业排行",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/students/province/{grade}": {
             "get": {
                 "tags": [
                     "Checkin"
                 ],
                 "summary": "根据年级获取省份信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/same/birthday/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取同名情况",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/same/name/{grade}": {
+            "get": {
+                "tags": [
+                    "Checkin"
+                ],
+                "summary": "根据年级获取同名情况",
                 "parameters": [
                     {
                         "type": "string",

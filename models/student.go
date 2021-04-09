@@ -147,53 +147,37 @@ type MaleAndFemaleAmount struct {
 	Amount int64
 }
 
-// GetMaleAndFemaleAmount 获取男女人数
-func (s *Student) GetMaleAndFemaleAmount(grade string) ([]MaleAndFemaleAmount, error) {
-	var result []MaleAndFemaleAmount
-	err := extension.DB.Raw(`
-		SELECT
-			case gender
-				when 0 then '女'
-				when 1 then '男'
-			END AS gender,
-			COUNT(*) AS amount
-		FROM
-			students
-		WHERE
-			grade = ?
-		GROUP BY
-			gender
-	`, grade).Scan(&result).Error
-	return result, err
+// GetAmountByGender 获取男女人数
+func (s *Student) GetAmountByGender(grade string, gender int) (int64, error) {
+	var total int64
+	err := extension.DB.Table(s.TableName()).Where("grade = ? and gender = ?", grade, gender).Count(&total).Error
+	return total, err
 }
 
-type AgeDistribution struct {
-	Age    string
-	Amount int64
+type StudentsValue struct {
+	Name  string `json:"name"`
+	Value int64 `json:"value"`
 }
+
 
 // GetAgeDistribution 获得年龄分布
-func (s *Student) GetAgeDistribution(grade string) ([]AgeDistribution, error) {
-	var result []AgeDistribution
+func (s *Student) GetAgeDistribution(grade string) ([]StudentsValue, error) {
+	var result []StudentsValue
 	err := extension.DB.Raw(`
 		SELECT 
-			TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,
-			COUNT(*) amount
+			TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS name,
+			COUNT(*) value
 		FROM 
 			students
 		WHERE 
 			birthday IS NOT NULL	
 			AND grade = ?
-		GROUP BY age
-		ORDER BY age ASC
+		GROUP BY name
+		ORDER BY name ASC
 	`, grade).Scan(&result).Error
 	return result, err
 }
 
-type StudentsValue struct {
-	Name  string
-	Value string
-}
 
 // GetStudentsProvince 获取省份
 func (s *Student) GetStudentsProvince(grade string) ([]StudentsValue, error) {
@@ -245,9 +229,9 @@ func (s *Student) GetStudentsProvince(grade string) ([]StudentsValue, error) {
 }
 
 // GetFirstnameByGrade 根据年级获取姓排行
-func (s *Student) GetFirstnameByGrade(grade string) ([]StudentsValue, error) {
+func (s *Student) GetFirstnameByGrade(grade string, count int) ([]StudentsValue, error) {
 	var result []StudentsValue
-	err := extension.DB.Raw(`
+	sql := `
 		SELECT
 			COUNT(*) value,
 			name
@@ -256,11 +240,18 @@ func (s *Student) GetFirstnameByGrade(grade string) ([]StudentsValue, error) {
 						LEFT(stu_name, 1) name
 					FROM 
 						students
-					WHERE grade = 17
+					WHERE grade = ?
 					) t
 		GROUP BY NAME
 		ORDER BY VALUE DESC
-	`).Scan(&result).Error
+	`
+	var whereVals []interface{}
+	whereVals = append(whereVals, grade)
+	if count > 0 {
+		sql += `limit ?`
+		whereVals = append(whereVals, count)
+	}
+	err := extension.DB.Raw(sql, whereVals...).Scan(&result).Error
 	return result, err
 }
 

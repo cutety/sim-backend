@@ -14,7 +14,7 @@ import (
 // @Produce json
 // @Param CheckinInfo body checkin.NewStudentCheckinService true "报道信息"
 // @Success 200 {object} common.Response
-// @Router /checkin/new [post]
+// @Router /students/checkin/new [post]
 func StudentCheckin(c *gin.Context) {
 	service := &checkin.NewStudentCheckinService{}
 	if err := c.ShouldBindJSON(service); err == nil {
@@ -67,7 +67,7 @@ func GetCheckinAmount(c *gin.Context) {
 // @Accept application/x-json-stream
 // @Param grade path string true "年级"
 // @Success 200 object common.Response 成功后返回值
-// @Router /gender/amount/{grade} [get]
+// @Router /students/gender/amount/{grade} [get]
 func GetMaleAndFemaleAmount(c *gin.Context) {
 	service := &checkin.GetMaleAndFemaleAmountService{}
 	grade := c.Param("grade")
@@ -102,7 +102,7 @@ func GetStudentsAmountByGrade(c *gin.Context) {
 // @Tags Checkin
 // @Param grade path string true "年级"
 // @Success 200 object common.Response 成功后返回值
-// @Router /age/distribution/{grade} [get]
+// @Router /students/age/distribution/{grade} [get]
 func GetAgeDistribution(c *gin.Context) {
 	service := &checkin.GetAgeDistributionService{}
 	grade := c.Param("grade")
@@ -209,6 +209,23 @@ func GetMajorRankByGrade(c *gin.Context) {
 	service := &checkin.GetMajorRankByGradeService{}
 	grade := c.Param("grade")
 	amount, err := service.GetMajorRankByGrade(grade)
+	if err != nil {
+		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
+		c.Abort()
+		return
+	}
+	c.JSON(200, utils.Response(utils.SUCCESS, amount))
+}
+
+// @Summary 根据年级获取报道信息
+// @Tags Checkin
+// @Param grade path string true "年级"
+// @Success 200 object common.Response 成功后返回值
+// @Router /students/checkin/info/{grade} [get]
+func GetCheckinInfoByGrade(c *gin.Context) {
+	service := &checkin.GetCheckinInfoByGradeService{}
+	grade := c.Param("grade")
+	amount, err := service.GetCheckinInfoByGrade(grade)
 	if err != nil {
 		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
 		c.Abort()

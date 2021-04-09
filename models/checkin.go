@@ -37,3 +37,24 @@ func (c *CheckinInfo) GetCheckinAmountByGrade(grade string) (int64, error) {
 	err := extension.DB.Table(c.TableName()).Where("stu_id like ? and checkin_status = 1", val).Count(&total).Error
 	return total, err
 }
+
+// GetCheckinInfoByGrade 通过年级获取报到信息
+func (c *CheckinInfo) GetCheckinInfoByGrade(grade string) ([]CheckinInfo, error) {
+	var app []CheckinInfo
+	err := extension.DB.Raw(`
+	SELECT 
+		c.stu_name,
+		c.major,
+		c.checkin_time
+	FROM 
+		checkin_info c
+	LEFT JOIN 
+		students as s
+	ON 
+		c.stu_id = s.stu_id
+	WHERE 
+		grade = ?
+		AND c.checkin_status = 1
+	`, grade).Scan(&app).Error
+	return app, err
+}
