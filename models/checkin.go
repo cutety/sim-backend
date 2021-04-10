@@ -38,9 +38,15 @@ func (c *CheckinInfo) GetCheckinAmountByGrade(grade string) (int64, error) {
 	return total, err
 }
 
+type CheckinTable struct {
+	StuName string `gorm:"stu_name" json:"stu_name"`
+	Major string `gorm:"major" json:"major"`
+	CheckinTime time.Time `gorm:"checkin_time" json:"checkin_time"`
+}
+
 // GetCheckinInfoByGrade 通过年级获取报到信息
-func (c *CheckinInfo) GetCheckinInfoByGrade(grade string) ([]CheckinInfo, error) {
-	var app []CheckinInfo
+func (c *CheckinInfo) GetCheckinInfoByGrade(grade string) ([]CheckinTable, error) {
+	var app []CheckinTable
 	err := extension.DB.Raw(`
 	SELECT 
 		c.stu_name,

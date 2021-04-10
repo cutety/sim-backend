@@ -83,7 +83,8 @@ func InitRouter() {
 		router.GET("students/same/name/:grade", v1.GetSameNameByGrade)
 		router.GET("students/same/birthday/:grade", v1.GetSameBirthdayByGrade)
 		router.GET("students/major/rank/:grade", v1.GetMajorRankByGrade)
-		router.GET("students/chekcin/info/:grade", v1.GetCheckinInfoByGrade)
+		router.GET("students/checkin/info/:grade", v1.GetCheckinInfoByGrade)
+		router.GET("students/grade/list", v1.GetGradeList)
 	}
 
 

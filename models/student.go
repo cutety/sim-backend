@@ -111,7 +111,7 @@ func (s *Student) GetDetailByStuID(stuName string, gender int, grade string, maj
 		whereSQL += `
 			AND s.stu_name like ?
 `
-		whereParams = append(whereParams, "%"+stuName+"%")
+		whereParams = append(whereParams, stuName+"%")
 	}
 	if gender != -1 {
 		whereSQL += `
