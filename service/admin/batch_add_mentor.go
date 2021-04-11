@@ -33,11 +33,9 @@ func (*BatchAddMentorService) BatchAddMentor(r io.Reader) common.Response {
 		logger.Error(err)
 		return utils.ResponseWithError(utils.ERROR, err)
 	}
-	logger.Info("rows is :", rows)
-	result := make([]Message, len(rows[1:]))
-	for index, row := range rows[1:] {
+	var result []Message
+	for _, row := range rows[1:] {
 		mentor := &models.Mentor{}
-		mentor.UserID = row[14]
 		mentor.Name = row[0]
 		if row[1] == "女" {
 			mentor.Gender = 0
@@ -56,6 +54,7 @@ func (*BatchAddMentorService) BatchAddMentor(r io.Reader) common.Response {
 		mentor.GraduateMajor = row[11]
 		mentor.PHDSchool = row[12]
 		mentor.PHDMajor = row[13]
+		mentor.UserID = row[14]
 		createUserService := user.CreateUserService{
 			UserID:   mentor.UserID,
 			Username: mentor.Name,
@@ -65,19 +64,28 @@ func (*BatchAddMentorService) BatchAddMentor(r io.Reader) common.Response {
 		err := models.MMentor.Create(mentor)
 		if err != nil {
 			if extension.IsMySQLDuplicateEntryError(err) {
-				result[index].Status = 1
-				result[index].UserID = mentor.UserID
-				result[index].Msg = "导入失败，重复导入"
+				message := Message{
+					Status: 1,
+					UserID: mentor.UserID,
+					Msg:    "导入失败，重复导入",
+				}
+				result = append(result, message)
 			} else {
-				result[index].Status = 1
-				result[index].UserID = mentor.UserID
-				result[index].Msg = fmt.Sprintf("导入失败：%s", err.Error())
+				message := Message{
+					Status: 1,
+					UserID: mentor.UserID,
+					Msg:   fmt.Sprintf("导入失败：%s", err.Error()),
+				}
+				result = append(result, message)
 			}
 		} else {
 			_ = createUserService.CreateUser()
-			result[index].Status = 0
-			result[index].UserID = mentor.UserID
-			result[index].Msg = "导入成功"
+			message := Message{
+				Status: 0,
+				UserID: mentor.UserID,
+				Msg:   "导入成功",
+			}
+			result = append(result, message)
 		}
 	}
 
