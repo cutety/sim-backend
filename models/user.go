@@ -67,7 +67,7 @@ func (*User) GetMatchingResult(pagination *common.Pagination, userID string) ([]
 	var result []MatchingResult
 	var total int64
 	err := extension.DB.Raw(`
-			SELECT
+		SELECT
 			a.apply_school,
 			case 
 				when a.apply_school = m.undergraduate_university then '学士'
@@ -77,18 +77,15 @@ func (*User) GetMatchingResult(pagination *common.Pagination, userID string) ([]
 				when a.apply_major = m.graduate_major then '硕士'
 				when a.apply_major = m.phd_major then '博士'
 			end as 'match_degree',
-			case 
-				when a.apply_school = m.undergraduate_university then m.undergraduate_major
-				when a.apply_school = m.graduate_school then m.graduate_major
-				when a.apply_school = m.phd_school then m.phd_major
+			case
 				when a.apply_major = m.undergraduate_major then m.undergraduate_major
 				when a.apply_major = m.graduate_major then m.graduate_major
 				when a.apply_major = m.phd_major then m.phd_major
 			end as 'match_major',
-			case a.apply_major
-				when m.undergraduate_major then m.undergraduate_university 
-				when m.graduate_major then m.graduate_school
-				when m.phd_major then m.phd_school
+			case
+				when a.apply_school = m.undergraduate_university then m.undergraduate_university 
+				when a.apply_school = m.graduate_school then m.graduate_school
+				when a.apply_school = m.phd_school then m.phd_school
 			end as 'match_school',
 			m.user_id ,
 			case
@@ -109,7 +106,11 @@ func (*User) GetMatchingResult(pagination *common.Pagination, userID string) ([]
 			left join
 			users u
 			on u.user_id = a.user_id
-		WHERE u.user_id = ?
+		WHERE 
+			u.user_id = ?
+		ORDER BY 
+			match_school DESC, 
+			match_major DESC
 		LIMIT ? OFFSET ?
     `, userID, pagination.Limit, (pagination.Page - 1) * pagination.Limit).
 		Scan(&result).Error
