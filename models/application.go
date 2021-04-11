@@ -120,9 +120,17 @@ func (a *Application) UpdateApplication(app *Application) error {
 type MatchedAdmittedStudents struct {
 	StuName string `gorm:"stu_name" json:"stu_name"`
 	StuID string `gorm:"stu_id" json:"stu_id"`
+	Gender string `gorm:"gender" json:"gender"`
+	Grade string `gorm:"grade" json:"grade"`
+	Major string `gorm:"major" json:"major"`
 	Phone string `gorm:"phone" json:"phone"`
 	Wechat string `gorm:"wechat" json:"wechat"`
 	QQ string `gorm:"qq" json:"qq"`
+	Email string `gorm:"email" json:"email"`
+	ApplySchool       string  `gorm:"column:apply_school;type:varchar(255)" json:"apply_school" validate:"required" label:"报考院校"`
+	ApplyMajor        string  `gorm:"column:apply_major;type:varchar(255)" json:"apply_major" validate:"required" label:"报考专业"`
+	PreliminaryResult float32 `gorm:"column:preliminary_result;type:decimal(11,2)" json:"preliminary_result" label:"初试成绩"`
+	RetrailResult     float32 `gorm:"column:retrail_result;type:decimal(11,2)" json:"retrail_result" label:"复试成绩"`
 	AdmissionSchool string `gorm:"admission_school" json:"admission_school"`
 	AdmissionMajor string `gorm:"admission_major" json:"admission_major"`
 }
@@ -131,8 +139,8 @@ func (*Application) ListMatchedAdmittedStudents(userID string, pagination * comm
 	var apps []MatchedAdmittedStudents
 	sql := `
 	SELECT 
-	s.stu_name, s.stu_id, s.phone, s.wechat, s.email, s.qq,
-	a.admission_school, a.admission_major
+	s.stu_name, s.stu_id, s.gender, s.grade, s.admission_major as major, s.phone, s.wechat, s.email, s.qq, s.email,
+	a.admission_school, a.admission_major, a.apply_school, a.apply_major, a.preliminary_result, a.retrail_result
 	FROM	
 		students s
 	LEFT JOIN
@@ -147,6 +155,7 @@ func (*Application) ListMatchedAdmittedStudents(userID string, pagination * comm
 			WHERE a.user_id = ?
 		) ap
 		ON ap.apply_school = a.admission_school
+		AND  a.is_admitted = 1
 `
 	total := extension.DB.Raw(sql, userID).Scan(&apps).RowsAffected
 	paginationSQL := `
