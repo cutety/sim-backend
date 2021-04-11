@@ -146,7 +146,7 @@ func (*Application) ListMatchedAdmittedStudents(userID string, pagination * comm
 	LEFT JOIN
 		application a
 		ON a.user_id = s.stu_id
-	RIGHT JOIN 
+	JOIN 
 		(
 			SELECT 
 				*
