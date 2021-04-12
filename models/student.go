@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"sim-backend/extension"
 	"sim-backend/models/common"
+	"sim-backend/utils/logger"
 	"time"
 )
 
@@ -23,6 +24,7 @@ type Student struct {
 	Email          string     `gorm:"column:email;type:varchar(50);" json:"email"`
 	Wechat         string     `grom:"column:wechat;type:varchar(25);" json:"wechat"`
 	QQ             string     `gorm:"column:qq;type:varchar(10);" json:"qq"`
+	Class          string     `gorm:"column:class;type:varchar(100);" json:"class"`
 	CreatedAt      time.Time  `gorm:"type:timestamp"`
 	UpdatedAt      time.Time  `gorm:"type:timestamp"`
 	DeletedAt      *time.Time `sql:"index" gorm:"type:timestamp"`
@@ -48,9 +50,9 @@ type StudentsInfoTable struct {
 	AdmissionMajor string `json:"major"`
 }
 
-func (c *Student) GetStudentsInfoTable(grade string) ([]StudentsInfoTable, error) {
+func (s *Student) GetStudentsInfoTable(grade string) ([]StudentsInfoTable, error) {
 	var apps []StudentsInfoTable
-	err := extension.DB.Table(c.TableName()).Where("grade = ?", grade).Find(&apps).Error
+	err := extension.DB.Table(s.TableName()).Where("grade = ?", grade).Find(&apps).Error
 	return apps, err
 }
 
@@ -156,9 +158,8 @@ func (s *Student) GetAmountByGender(grade string, gender int) (int64, error) {
 
 type StudentsValue struct {
 	Name  string `json:"name"`
-	Value int64 `json:"value"`
+	Value int64  `json:"value"`
 }
-
 
 // GetAgeDistribution 获得年龄分布
 func (s *Student) GetAgeDistribution(grade string) ([]StudentsValue, error) {
@@ -177,7 +178,6 @@ func (s *Student) GetAgeDistribution(grade string) ([]StudentsValue, error) {
 	`, grade).Scan(&result).Error
 	return result, err
 }
-
 
 // GetStudentsProvince 获取省份
 func (s *Student) GetStudentsProvince(grade string) ([]StudentsValue, error) {
@@ -268,7 +268,7 @@ func (s *Student) GetSameNameByGrade(grade string) ([]StudentsValue, error) {
 	return result, err
 }
 
-func (*Student) GetSameBirthdayByGrade(grade string)([]StudentsValue, error) {
+func (*Student) GetSameBirthdayByGrade(grade string) ([]StudentsValue, error) {
 	var result []StudentsValue
 	sql := `
 		SELECT 
@@ -288,7 +288,7 @@ func (*Student) GetSameBirthdayByGrade(grade string)([]StudentsValue, error) {
 }
 
 // GetMajorRankByGrade 根据年级获取专业排行
-func (*Student) GetMajorRankByGrade(grade string)([]StudentsValue, error) {
+func (*Student) GetMajorRankByGrade(grade string) ([]StudentsValue, error) {
 	var result []StudentsValue
 	sql := `
 	SELECT 
@@ -308,3 +308,15 @@ func (*Student) GetMajorRankByGrade(grade string)([]StudentsValue, error) {
 	return result, err
 }
 
+// ListClassByGrade 通过年级获取班级列表
+func (s *Student) ListClassByGrade(grade string) ([]string, error) {
+	var classes []string
+	err := extension.DB.Table(s.TableName()).
+		Where("grade = ? AND class IS NOT NULL", grade).
+		Select("DISTINCT(class)").Pluck("class", &classes).Error
+	if err != nil {
+		return nil, err
+	}
+	logger.Info("classes is", classes)
+	return classes, err
+}

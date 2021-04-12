@@ -6,6 +6,7 @@ import (
 	"sim-backend/service/student"
 	"sim-backend/service/user"
 	"sim-backend/utils"
+	"sim-backend/utils/logger"
 )
 
 // @Summary 学生更新报考信息
@@ -152,4 +153,16 @@ func ListMatchedAdmittedStudents(c *gin.Context) {
 		Total: total,
 	}
 	c.JSON(200, utils.Response(utils.SUCCESS, list))
+}
+
+func ListClassesByGrade(c *gin.Context) {
+	grade := c.Query("grade")
+	service := student.ListClassesByGradeService{}
+	classes, err := service.ListClassesByGrade(grade)
+	if err != nil {
+		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
+		return
+	}
+	logger.Info("classes is", classes)
+	c.JSON(200, utils.Response(utils.SUCCESS, classes))
 }
