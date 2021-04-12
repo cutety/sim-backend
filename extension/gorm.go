@@ -46,6 +46,6 @@ func InitDB() {
 	db.DB().SetMaxOpenConns(200)
 
 	DB = db
-	logger.Info("MySQL is sucessfully connected")
+	logger.Info("MySQL is successfully connected")
 }
 
