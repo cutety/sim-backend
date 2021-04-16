@@ -23,7 +23,6 @@ func Validate(data interface{}) (string, int) {
 		label := field.Tag.Get("label")
 		return label
 	})
-
 	err = validate.Struct(data)
 	if err != nil {
 		for _, v := range err.(validator.ValidationErrors) {

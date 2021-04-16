@@ -1,5 +1,9 @@
 package models
 
+import (
+	"sim-backend/extension"
+)
+
 var MCourse Course
 
 type Course struct {
@@ -12,4 +16,17 @@ type Course struct {
 
 func (*Course) TableName() string {
 	return "course"
+}
+
+func (c *Course) Create() error {
+	result := extension.DB.Where(&c).Attrs(&c).FirstOrCreate(&c)
+	if result.RowsAffected != 0 {
+		return nil
+	} else {
+		return result.Error
+	}
+}
+
+func (*Course) GetOnlineCourse error {
+
 }

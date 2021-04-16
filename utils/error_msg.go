@@ -54,3 +54,18 @@ func ResponseWithError(code int, err error) common.Response{
 		Error:  err.Error(),
 	}
 }
+
+func ResponseAll(data interface{}, err error) common.Response{
+	response := common.Response{
+		Data:   data,
+	}
+	if err == nil {
+		response.Status = SUCCESS
+		response.Msg = errorMsgMap[SUCCESS]
+	} else {
+		response.Status = ERROR
+		response.Msg = errorMsgMap[ERROR]
+		response.Error = err.Error()
+	}
+	return response
+}
