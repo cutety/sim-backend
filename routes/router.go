@@ -2,12 +2,16 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	//"github.com/gin-gonic/gin/binding"
+	//"github.com/go-playground/validator/v10"
 	"github.com/spf13/viper"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
 	v1 "sim-backend/api/v1"
 	"sim-backend/middlewire"
+	//"sim-backend/models"
 	"sim-backend/utils/logger"
+	//validator2 "sim-backend/utils/validator"
 )
 
 
@@ -56,6 +60,8 @@ func InitRouter() {
 		mentor.GET("mentor/student/request", v1.ListInstructRequest)
 		mentor.PUT("mentor/info", v1.UpdateMentor)
 		mentor.GET("mentor/bind/student", v1.ChooseStudent)
+		mentor.POST("mentor/add/course", v1.InsertCourse)
+		mentor.POST("mentor/add/lesson", v1.CreateLesson)
 	}
 
 	// 管理员权限

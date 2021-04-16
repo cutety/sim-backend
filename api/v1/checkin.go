@@ -234,6 +234,8 @@ func GetCheckinInfoByGrade(c *gin.Context) {
 	c.JSON(200, utils.Response(utils.SUCCESS, amount))
 }
 
+
+// GetGradeList 获取年级列表
 func GetGradeList(c *gin.Context) {
 	var gradeList = [...]string{"17", "18", "19", "20"}
 	c.JSON(200, utils.Response(utils.SUCCESS, gradeList))

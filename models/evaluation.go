@@ -1,5 +1,9 @@
 package models
 
+import (
+	"sim-backend/extension"
+)
+
 var MEvaluation Evaluation
 
 type Evaluation struct {
@@ -13,4 +17,13 @@ type Evaluation struct {
 
 func (*Evaluation) TableName() string {
 	return "evaluation"
+}
+
+func (e *Evaluation) Create() error {
+	result := extension.DB.Create(e)
+	if result.RowsAffected != 0 {
+		return nil
+	} else {
+		return result.Error
+	}
 }
