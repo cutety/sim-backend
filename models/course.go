@@ -15,7 +15,7 @@ type Course struct {
 }
 
 func (*Course) TableName() string {
-	return "course"
+	return "courses"
 }
 
 func (c *Course) Create() error {
@@ -28,5 +28,5 @@ func (c *Course) Create() error {
 }
 
 func (*Course) GetOnlineCourse() error {
-
+	return nil
 }

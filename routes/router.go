@@ -2,16 +2,12 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	//"github.com/gin-gonic/gin/binding"
-	//"github.com/go-playground/validator/v10"
 	"github.com/spf13/viper"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
 	v1 "sim-backend/api/v1"
 	"sim-backend/middlewire"
-	//"sim-backend/models"
 	"sim-backend/utils/logger"
-	//validator2 "sim-backend/utils/validator"
 )
 
 
@@ -46,6 +42,7 @@ func InitRouter() {
 		auth.POST("student/application", v1.CreateApplication)
 		auth.GET("student/detail", v1.ListStudentsDetail)
 		auth.GET("student/admission/history", v1.ListMatchedAdmittedStudents)
+		auth.GET("student/evaluable/lesson", v1.ListEvaluableLessons)
 	}
 
 	//教师权限

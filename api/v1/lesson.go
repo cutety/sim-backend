@@ -16,3 +16,11 @@ func CreateLesson(c *gin.Context) {
 		c.JSON(200, utils.ResponseAll(nil, err))
 	}
 }
+
+// ListEvaluableLessons 列出未评价的课
+func ListEvaluableLessons(c *gin.Context) {
+	stuID := c.Query("stu_id")
+	service := &lesson.ListEvaluableLessons{}
+	evaluableLessons, err := service.ListEvaluableLessons(stuID)
+	c.JSON(200, utils.ResponseAll(evaluableLessons, err))
+}
