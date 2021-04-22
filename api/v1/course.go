@@ -8,6 +8,15 @@ import (
 	"sim-backend/utils/validator"
 )
 
+
+// InsertCourse 插入课程
+// @Summary 开始上课
+// @Tags Course
+// @Accept json
+// @Produce json
+// @Param InsertCourseService body course.InsertCourseService true "评价信息"
+// @Success 200 {object} common.Response
+// @Router /mentor/add/course [POST]
 func InsertCourse(c *gin.Context) {
 	service := &course.InsertCourseService{}
 	if err := c.ShouldBindJSON(service); err == nil {

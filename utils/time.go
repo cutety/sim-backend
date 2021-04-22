@@ -31,31 +31,3 @@ func ParseWithLocation(timeStr string)  time.Time {
 	}
 }
 
-func FormatGMTISO8601Date(timestamp time.Time) string {
-	return timestamp.Format(GMTISO8601DateFormat)
-}
-
-func FormatGMTISO8601DatePointer(timestamp *time.Time) string {
-	if timestamp == nil {
-		return ""
-	}
-
-	return timestamp.Format(GMTISO8601DateFormat)
-}
-
-func ParseGMTISO8601DateNoError(timeString string) *time.Time {
-	if timeString == "" {
-		return nil
-	}
-
-	t, err := time.Parse(GMTISO8601DateFormat, timeString)
-	if err != nil {
-		return nil
-	}
-
-	return &t
-}
-
-func ParseGMTISO8601Date(timeString string) (time.Time, error) {
-	return time.Parse(GMTISO8601DateFormat, timeString)
-}

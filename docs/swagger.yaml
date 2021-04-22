@@ -26,6 +26,53 @@ definitions:
         example: 10001
         type: integer
     type: object
+  course.InsertCourseService:
+    properties:
+      class:
+        type: string
+      grade:
+        type: string
+      lesson:
+        type: string
+      mentor_id:
+        type: string
+    required:
+    - class
+    - grade
+    - lesson
+    - mentor_id
+    type: object
+  evaluation.CreateEvaluationService:
+    properties:
+      content:
+        type: string
+      lesson_id:
+        type: integer
+      mentor_id:
+        type: string
+      rate:
+        type: string
+      stu_id:
+        type: string
+    required:
+    - content
+    - lesson_id
+    - mentor_id
+    - rate
+    - stu_id
+    type: object
+  lesson.CreateLessonService:
+    properties:
+      course_id:
+        type: integer
+      end_at:
+        type: string
+      start_at:
+        type: string
+    required:
+    - end_at
+    - start_at
+    type: object
   mentor.CreateMentorService:
     properties:
       degree:
@@ -246,6 +293,48 @@ paths:
       summary: 添加导师
       tags:
       - Mentor
+  /mentor/add/course:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 评价信息
+        in: body
+        name: InsertCourseService
+        required: true
+        schema:
+          $ref: '#/definitions/course.InsertCourseService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 开始上课
+      tags:
+      - Course
+  /mentor/add/lesson:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 上课信息
+        in: body
+        name: CreateLessonService
+        required: true
+        schema:
+          $ref: '#/definitions/lesson.CreateLessonService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 开始上课
+      tags:
+      - Lesson
   /mentor/bind/student:
     get:
       consumes:
@@ -367,6 +456,27 @@ paths:
       summary: 根据userID获取指导申请
       tags:
       - Mentor
+  /student/add/evaluation:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 评价信息
+        in: body
+        name: CreateEvaluationService
+        required: true
+        schema:
+          $ref: '#/definitions/evaluation.CreateEvaluationService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 开始上课
+      tags:
+      - Evaluation
   /student/admission/history:
     get:
       consumes:
@@ -488,6 +598,26 @@ paths:
       summary: 获取学生列表
       tags:
       - Student
+  /student/evaluable/lesson:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 学生user_id
+        in: query
+        name: stu_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 列出未评价的课
+      tags:
+      - Lesson
   /student/info/:
     get:
       consumes:
@@ -789,6 +919,26 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 根据user_id获取用户信息
+      tags:
+      - User
+  /user/list/class:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 班级
+        in: query
+        name: grade
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 通过年级获取班级列表
       tags:
       - User
   /user/login:

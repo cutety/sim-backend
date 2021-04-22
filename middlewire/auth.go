@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"sim-backend/utils"
-	"sim-backend/utils/logger"
 )
 
 const (
@@ -21,9 +20,6 @@ func AuthRole(role int) gin.HandlerFunc {
 		r, found := GetValueFromToken(token, "role")
 		if found {
 			tr := cast.ToInt(r)
-			logger.Info("role request:", tr)
-			logger.Info("role require:", role)
-			logger.Info("role range:", tokenRole[tr-1])
 			for index, k := range tokenRole[tr-1] {
 				if k == role {
 					c.Set("role", k)

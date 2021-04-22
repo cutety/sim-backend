@@ -6,7 +6,6 @@ import (
 	"sim-backend/service/student"
 	"sim-backend/service/user"
 	"sim-backend/utils"
-	"sim-backend/utils/logger"
 )
 
 // @Summary 学生更新报考信息
@@ -155,6 +154,13 @@ func ListMatchedAdmittedStudents(c *gin.Context) {
 	c.JSON(200, utils.Response(utils.SUCCESS, list))
 }
 
+// @Summary 通过年级获取班级列表
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param grade query string true "班级"
+// @Success 200 {object} common.Response
+// @Router /user/list/class [get]
 func ListClassesByGrade(c *gin.Context) {
 	grade := c.Query("grade")
 	service := student.ListClassesByGradeService{}
@@ -163,6 +169,5 @@ func ListClassesByGrade(c *gin.Context) {
 		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
 		return
 	}
-	logger.Info("classes is", classes)
 	c.JSON(200, utils.Response(utils.SUCCESS, classes))
 }

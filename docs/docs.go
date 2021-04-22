@@ -117,6 +117,72 @@ var doc = `{
                 }
             }
         },
+        "/mentor/add/course": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Course"
+                ],
+                "summary": "开始上课",
+                "parameters": [
+                    {
+                        "description": "评价信息",
+                        "name": "InsertCourseService",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/course.InsertCourseService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mentor/add/lesson": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lesson"
+                ],
+                "summary": "开始上课",
+                "parameters": [
+                    {
+                        "description": "上课信息",
+                        "name": "CreateLessonService",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/lesson.CreateLessonService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/mentor/bind/student": {
             "get": {
                 "consumes": [
@@ -306,6 +372,39 @@ var doc = `{
                 }
             }
         },
+        "/student/add/evaluation": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Evaluation"
+                ],
+                "summary": "开始上课",
+                "parameters": [
+                    {
+                        "description": "评价信息",
+                        "name": "CreateEvaluationService",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/evaluation.CreateEvaluationService"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/student/admission/history": {
             "get": {
                 "consumes": [
@@ -481,6 +580,37 @@ var doc = `{
                         "description": "专业",
                         "name": "major",
                         "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/evaluable/lesson": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lesson"
+                ],
+                "summary": "列出未评价的课",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "学生user_id",
+                        "name": "stu_id",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -967,6 +1097,37 @@ var doc = `{
                 }
             }
         },
+        "/user/list/class": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "通过年级获取班级列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "班级",
+                        "name": "grade",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "consumes": [
@@ -1100,6 +1261,74 @@ var doc = `{
                 "status": {
                     "type": "integer",
                     "example": 10001
+                }
+            }
+        },
+        "course.InsertCourseService": {
+            "type": "object",
+            "required": [
+                "class",
+                "grade",
+                "lesson",
+                "mentor_id"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "string"
+                },
+                "lesson": {
+                    "type": "string"
+                },
+                "mentor_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "evaluation.CreateEvaluationService": {
+            "type": "object",
+            "required": [
+                "content",
+                "lesson_id",
+                "mentor_id",
+                "rate",
+                "stu_id"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "lesson_id": {
+                    "type": "integer"
+                },
+                "mentor_id": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "string"
+                },
+                "stu_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "lesson.CreateLessonService": {
+            "type": "object",
+            "required": [
+                "end_at",
+                "start_at"
+            ],
+            "properties": {
+                "course_id": {
+                    "type": "integer"
+                },
+                "end_at": {
+                    "type": "string"
+                },
+                "start_at": {
+                    "type": "string"
                 }
             }
         },
