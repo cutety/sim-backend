@@ -2,6 +2,7 @@ package course
 
 import (
 	"sim-backend/models"
+	"sim-backend/utils"
 )
 
 type InsertCourseService struct {
@@ -12,7 +13,9 @@ type InsertCourseService struct {
 }
 
 func (s *InsertCourseService) InsertCourse() error {
+	courseID := utils.UUID()
 	course := &models.Course{
+		CourseID: courseID,
 		MentorID: s.MentorID,
 		Lesson:   s.Lesson,
 		Grade:    s.Grade,

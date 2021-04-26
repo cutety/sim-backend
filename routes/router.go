@@ -64,6 +64,7 @@ func InitRouter() {
 		mentor.GET("mentor/bind/student", v1.ChooseStudent)
 		mentor.POST("mentor/add/course", v1.InsertCourse)
 		mentor.POST("mentor/add/lesson", v1.CreateLesson)
+		mentor.POST("mentor/add/class", v1.CreateClass)
 	}
 
 	// 管理员权限
@@ -95,6 +96,8 @@ func InitRouter() {
 		router.GET("students/major/rank/:grade", v1.GetMajorRankByGrade)
 		router.GET("students/checkin/info/:grade", v1.GetCheckinInfoByGrade)
 		router.GET("students/grade/list", v1.GetGradeList)
+		router.GET("class/list", v1.ListClassByGrade)
+		router.GET("course/list", v1.ListCourses)
 	}
 
 

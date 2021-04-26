@@ -36,3 +36,12 @@ func InsertCourse(c *gin.Context) {
 		c.Abort()
 	}
 }
+
+func ListCourses(c *gin.Context) {
+	mentorID := c.Query("mentor_id")
+	grade := c.Query("grade")
+	class := c.Query("class")
+	service := &course.ListCoursesService{}
+	result, err := service.ListService(mentorID, grade, class)
+	c.JSON(200, utils.ResponseAll(result, err))
+}
