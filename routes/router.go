@@ -48,6 +48,7 @@ func InitRouter() {
 		auth.GET("student/admission/history", v1.ListMatchedAdmittedStudents)
 		auth.GET("student/evaluable/lesson", v1.ListEvaluableLessons)
 		auth.POST("student/add/evaluation", v1.CreateEvaluation)
+		auth.GET("students/evaluation/detail", v1.GetEvaluationDetail)
 	}
 
 	//教师权限

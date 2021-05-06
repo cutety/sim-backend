@@ -23,3 +23,10 @@ func CreateEvaluation(c *gin.Context) {
 		c.JSON(200, utils.ResponseAll(nil, err))
 	}
 }
+
+func GetEvaluationDetail(c *gin.Context) {
+	evaluationID := c.Query("evaluation_id")
+	service := &evaluation.GetEvaluationDetailService{}
+	detail, err := service.GetEvaluationDetail(evaluationID)
+	c.JSON(200, utils.ResponseAll(detail, err))
+}

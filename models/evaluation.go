@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/jinzhu/gorm"
 	"sim-backend/extension"
 )
 
@@ -35,4 +36,17 @@ func (*Evaluation) ListEvaluation(mentorID, courseID string) ([]Evaluation, erro
 	err := extension.DB.Where("mentorID = ? AND courseID = ?", mentorID, courseID).
 		Find(&result).Error
 	return result, err
+}
+
+// GetEvaluationDetail 根据evaluationID获取课程评价详情
+func (* Evaluation) GetEvaluationDetail(evaluationID string) (*Evaluation, error) {
+	evaluation := &Evaluation{}
+	err := extension.DB.Where("evaluation_id = ?", evaluationID).Find(evaluation).Error
+	if err != nil && err == gorm.ErrRecordNotFound {
+		return evaluation, nil
+	}
+	if err != nil {
+		return evaluation, err
+	}
+	return evaluation, nil
 }
