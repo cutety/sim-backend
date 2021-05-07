@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"sim-backend/models/common"
 	"sim-backend/service/evaluation"
 	"sim-backend/utils"
 )
@@ -24,9 +25,32 @@ func CreateEvaluation(c *gin.Context) {
 	}
 }
 
+func ListEvaluation(c *gin.Context) {
+	mentorID := c.Query("mentor_id")
+	courseID := c.Query("course_id")
+	service := &evaluation.ListEvaluationService{}
+	list, total, err := service.ListEvaluation(mentorID, courseID)
+	response := common.DataList{
+		Items: list,
+		Total: total,
+	}
+	c.JSON(200, utils.ResponseAll(response, err))
+}
+
 func GetEvaluationDetail(c *gin.Context) {
 	evaluationID := c.Query("evaluation_id")
 	service := &evaluation.GetEvaluationDetailService{}
 	detail, err := service.GetEvaluationDetail(evaluationID)
 	c.JSON(200, utils.ResponseAll(detail, err))
+}
+
+func ListEvaluatedHistory(c *gin.Context) {
+	stuID := c.Query("stu_id")
+	service := &evaluation.ListEvaluatedHistoryService{}
+	list, total, err := service.ListEvaluatedHistory(stuID)
+	response := common.DataList{
+		Items: list,
+		Total: total,
+	}
+	c.JSON(200, utils.ResponseAll(response, err))
 }

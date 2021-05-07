@@ -149,5 +149,11 @@ func ListAllMentors(c *gin.Context) {
 			Total: total,
 		}))
 	}
+}
 
+func GetAdmittedAndNotAdmittedAmount(c *gin.Context) {
+	service := &user.GetAdmittedAndNotAdmittedAmountService{}
+	grade := c.Query("grade")
+	applicationValues, err := service.GetAdmittedAndNotAdmittedAmount(grade)
+	c.JSON(200, utils.ResponseAll(applicationValues, err))
 }

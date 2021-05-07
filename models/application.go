@@ -167,3 +167,26 @@ func (*Application) ListMatchedAdmittedStudents(userID string, pagination * comm
 	}
 	return apps, total, err
 }
+
+type ApplicationValue struct {
+	Admitted  int64 `json:"admitted"`
+	Total int64  `json:"total"`
+}
+
+func (*Application) GetAdmittedAndNotAdmittedAmount(grade string) ([]ApplicationValue, error) {
+	var result []ApplicationValue
+	sql := `
+		SELECT 
+			SUM(case when is_admitted = 1 then 1 ELSE 0 END) AS admitted,
+			COUNT(*) AS total
+		FROM 
+			application a
+		LEFT JOIN 
+			students s
+			ON s.stu_id = a.user_id
+		WHERE 
+			s.grade = ?
+`
+	err := extension.DB.Raw(sql, grade).Scan(&result).Error
+	return result, err
+}

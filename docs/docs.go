@@ -62,6 +62,40 @@ var doc = `{
                 }
             }
         },
+        "/class/list": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Class"
+                ],
+                "summary": "通过年级获取班级列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Class"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/info/me": {
             "get": {
                 "consumes": [
@@ -706,23 +740,17 @@ var doc = `{
         "/students/checkin/info/{grade}": {
             "get": {
                 "tags": [
-                    "Checkin"
+                    "User"
                 ],
-                "summary": "根据年级获取报道信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "年级",
-                        "name": "grade",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
+                "summary": "获取年级列表",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -1291,6 +1319,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "content",
+                "course_id",
                 "lesson_id",
                 "mentor_id",
                 "rate",
@@ -1300,8 +1329,11 @@ var doc = `{
                 "content": {
                     "type": "string"
                 },
+                "course_id": {
+                    "type": "string"
+                },
                 "lesson_id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "mentor_id": {
                     "type": "string"
@@ -1322,7 +1354,7 @@ var doc = `{
             ],
             "properties": {
                 "course_id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "end_at": {
                     "type": "string"
@@ -1438,6 +1470,32 @@ var doc = `{
                     "type": "string"
                 },
                 "wechat": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Class": {
+            "type": "object",
+            "properties": {
+                "class_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }

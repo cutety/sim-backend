@@ -17,6 +17,13 @@ func CreateClass(c *gin.Context) {
 }
 
 // ListClassByGrade 通过年级获取班级列表
+// @Summary 通过年级获取班级列表
+// @Tags Class
+// @Accept json
+// @Produce json
+// @Param grade query string true "年级"
+// @Success 200 {object} []models.Class
+// @Router /class/list [get]
 func ListClassByGrade(c *gin.Context) {
 	grade := c.Query("grade")
 	service := &class.ListClassesByGradeService{}

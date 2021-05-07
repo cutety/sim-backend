@@ -46,8 +46,10 @@ definitions:
     properties:
       content:
         type: string
+      course_id:
+        type: string
       lesson_id:
-        type: integer
+        type: string
       mentor_id:
         type: string
       rate:
@@ -56,6 +58,7 @@ definitions:
         type: string
     required:
     - content
+    - course_id
     - lesson_id
     - mentor_id
     - rate
@@ -64,7 +67,7 @@ definitions:
   lesson.CreateLessonService:
     properties:
       course_id:
-        type: integer
+        type: string
       end_at:
         type: string
       start_at:
@@ -146,6 +149,23 @@ definitions:
     - name
     - phone
     - user_id
+    type: object
+  models.Class:
+    properties:
+      class_id:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      grade:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
     type: object
   student.CreateApplicationService:
     properties:
@@ -258,6 +278,28 @@ paths:
       summary: 批量添加导师
       tags:
       - Admin
+  /class/list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 年级
+        in: query
+        name: grade
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Class'
+            type: array
+      summary: 通过年级获取班级列表
+      tags:
+      - Class
   /info/me:
     get:
       consumes:
@@ -671,20 +713,16 @@ paths:
       - Checkin
   /students/checkin/info/{grade}:
     get:
-      parameters:
-      - description: 年级
-        in: path
-        name: grade
-        required: true
-        type: string
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/common.Response'
-      summary: 根据年级获取报道信息
+            items:
+              type: string
+            type: array
+      summary: 获取年级列表
       tags:
-      - Checkin
+      - User
   /students/checkin/new:
     post:
       consumes:

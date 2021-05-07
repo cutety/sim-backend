@@ -49,6 +49,8 @@ func InitRouter() {
 		auth.GET("student/evaluable/lesson", v1.ListEvaluableLessons)
 		auth.POST("student/add/evaluation", v1.CreateEvaluation)
 		auth.GET("students/evaluation/detail", v1.GetEvaluationDetail)
+		auth.GET("user/evaluation/list/detail", v1.ListEvaluation)
+		auth.GET("user/evaluation/list/history", v1.ListEvaluatedHistory)
 	}
 
 	//教师权限
@@ -99,6 +101,7 @@ func InitRouter() {
 		router.GET("students/grade/list", v1.GetGradeList)
 		router.GET("class/list", v1.ListClassByGrade)
 		router.GET("course/list", v1.ListCourses)
+		router.GET("visual/admitted", v1.GetAdmittedAndNotAdmittedAmount)
 	}
 
 
