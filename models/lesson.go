@@ -30,12 +30,14 @@ func (l *Lesson) Create() error{
 
 type EvaluableLesson struct {
 	LessonID string `gorm:"column:lesson_id;" json:"lesson_id"`
-	CourseID string `grom:"column:course_id" json:"course_id"`
-	StartAt time.Time `gorm:"column:start_at" json:"start_at"`
-	EndAt time.Time `gorm:"column:end_at" json:"end_at"`
+	CourseID string `gorm:"column:course_id" json:"course_id"`
 	Grade string `gorm:"column:grade" json:"grade"`
 	Class string `gorm:"column:class" json:"class"`
 	Lesson string `gorm:"column:lesson" json:"lesson"`
+	MentorID string `gorm:"column:mentor_id" json:"mentor_id"`
+	MentorName string `gorm:"column:mentor_name" json:"mentor_name"`
+	StartAt time.Time `gorm:"column:start_at" json:"start_at"`
+	EndAt time.Time `gorm:"column:end_at" json:"end_at"`
 }
 
 func (*Lesson) ListEvaluableLessons(stuID string) ([]EvaluableLesson, error) {
@@ -43,7 +45,8 @@ func (*Lesson) ListEvaluableLessons(stuID string) ([]EvaluableLesson, error) {
 	sql := `
 SELECT 
 	l.lesson_id, ANY_VALUE(l.start_at) AS start_at, ANY_VALUE(l.end_at) AS end_at,
-	ANY_VALUE(c.course_id) as course_id, ANY_VALUE(c.grade) AS grade, ANY_VALUE(c.class) AS class, ANY_VALUE(c.lesson) AS lesson
+	ANY_VALUE(c.course_id) as course_id, ANY_VALUE(c.grade) AS grade, ANY_VALUE(c.class) AS class, ANY_VALUE(c.lesson) AS lesson,
+	ANY_VALUE(c.mentor_id) AS mentor_id, ANY_VALUE(m.name) AS mentor_name
 FROM 
 	lessons l
 JOIN
@@ -52,6 +55,9 @@ JOIN
 LEFT JOIN 
 	evaluations e
 	ON e.lesson_id = l.lesson_id
+LEFT JOIN 
+	mentors m
+	ON m.user_id = c.mentor_id
 WHERE
 	l.lesson_id NOT IN
 (
