@@ -30,7 +30,7 @@ func (service *LoginService) Login() common.Response {
 		}
 	} else {
 		return common.Response{
-			Status: response.Status,
+			Status: user.Role,
 			Data:   token,
 			Msg:    response.Msg,
 			Error:  response.Error,

@@ -724,17 +724,23 @@
         "/students/checkin/info/{grade}": {
             "get": {
                 "tags": [
-                    "User"
+                    "Checkin"
                 ],
-                "summary": "获取年级列表",
+                "summary": "根据年级获取报道信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/common.Response"
                         }
                     }
                 }
@@ -821,6 +827,25 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/grade/list": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "获取年级列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     }
                 }

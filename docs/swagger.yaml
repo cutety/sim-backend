@@ -713,16 +713,20 @@ paths:
       - Checkin
   /students/checkin/info/{grade}:
     get:
+      parameters:
+      - description: 年级
+        in: path
+        name: grade
+        required: true
+        type: string
       responses:
         "200":
           description: OK
           schema:
-            items:
-              type: string
-            type: array
-      summary: 获取年级列表
+            $ref: '#/definitions/common.Response'
+      summary: 根据年级获取报道信息
       tags:
-      - User
+      - Checkin
   /students/checkin/new:
     post:
       consumes:
@@ -778,6 +782,18 @@ paths:
       summary: 男生女生数量
       tags:
       - Checkin
+  /students/grade/list:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: 获取年级列表
+      tags:
+      - User
   /students/info/table/{grade}:
     get:
       parameters:

@@ -173,8 +173,8 @@ type ApplicationValue struct {
 	Total int64  `json:"total"`
 }
 
-func (*Application) GetAdmittedAndNotAdmittedAmount(grade string) ([]ApplicationValue, error) {
-	var result []ApplicationValue
+func (*Application) GetAdmittedAndNotAdmittedAmount(grade string) (*ApplicationValue, error) {
+	result := &ApplicationValue{}
 	sql := `
 		SELECT 
 			SUM(case when is_admitted = 1 then 1 ELSE 0 END) AS admitted,
@@ -188,5 +188,8 @@ func (*Application) GetAdmittedAndNotAdmittedAmount(grade string) ([]Application
 			s.grade = ?
 `
 	err := extension.DB.Raw(sql, grade).Scan(&result).Error
+	if err == gorm.ErrRecordNotFound{
+		return &ApplicationValue{}, nil
+	}
 	return result, err
 }
