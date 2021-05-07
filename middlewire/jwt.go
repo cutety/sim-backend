@@ -20,7 +20,7 @@ type JwtClaims struct {
 }
 
 func SetToken(userID string, role int) (string, common.Response) {
-	expiresAt := time.Now().Add(7*24*time.Hour)
+	expiresAt := time.Now().Add(14*24*time.Hour)
 	SetClaims := JwtClaims{
 		userID,
 		role,
