@@ -30,6 +30,7 @@ func (l *Lesson) Create() error{
 
 type EvaluableLesson struct {
 	LessonID string `gorm:"column:lesson_id;" json:"lesson_id"`
+	CourseID string `grom:"column:course_id" json:"course_id"`
 	StartAt time.Time `gorm:"column:start_at" json:"start_at"`
 	EndAt time.Time `gorm:"column:end_at" json:"end_at"`
 	Grade string `gorm:"column:grade" json:"grade"`
@@ -42,7 +43,7 @@ func (*Lesson) ListEvaluableLessons(stuID string) ([]EvaluableLesson, error) {
 	sql := `
 SELECT 
 	l.lesson_id, ANY_VALUE(l.start_at) AS start_at, ANY_VALUE(l.end_at) AS end_at,
-	ANY_VALUE(c.grade) AS grade, ANY_VALUE(c.class) AS class, ANY_VALUE(c.lesson) AS lesson
+	ANY_VALUE(c.course_id) as course_id, ANY_VALUE(c.grade) AS grade, ANY_VALUE(c.class) AS class, ANY_VALUE(c.lesson) AS lesson
 FROM 
 	lessons l
 JOIN
