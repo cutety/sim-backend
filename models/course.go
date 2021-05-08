@@ -13,6 +13,7 @@ type Course struct {
 	Lesson string	`gorm:"column:lesson;type:varchar(255)" json:"course" validate:"required" label:"课程名"`
 	Grade string 	`gorm:"column:grade;type:varchar(4)" json:"grade" validate:"required" label:"年级"`
 	Class string 	`gorm:"column:class;type:varchar(255)" json:"class" validate:"required" label:"班级"`
+	ClassID string `gorm:"column:class_id;type:varchar(255)" json:"class_id" validate:"required" label:"班级ID"`
 }
 
 func (*Course) TableName() string {

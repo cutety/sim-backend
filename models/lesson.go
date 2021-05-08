@@ -45,7 +45,7 @@ func (*Lesson) ListEvaluableLessons(stuID string) ([]EvaluableLesson, error) {
 	sql := `
 SELECT 
 	l.lesson_id, ANY_VALUE(l.start_at) AS start_at, ANY_VALUE(l.end_at) AS end_at,
-	ANY_VALUE(c.course_id) as course_id, ANY_VALUE(c.grade) AS grade, ANY_VALUE(c.class) AS class, ANY_VALUE(c.lesson) AS lesson,
+	ANY_VALUE(c.course_id) as course_id, ANY_VALUE(c.class_id) as class_id, ANY_VALUE(c.grade) AS grade, ANY_VALUE(c.class) AS class, ANY_VALUE(c.lesson) AS lesson,
 	ANY_VALUE(c.mentor_id) AS mentor_id, ANY_VALUE(m.name) AS mentor_name
 FROM 
 	lessons l
@@ -75,9 +75,18 @@ WHERE
 		WHERE e.stu_id = ?
 	) a 
 )
+AND c.class_id = (
+						SELECT 
+							class_id
+						FROM 
+							class
+						WHERE 
+							grade = (SELECT grade FROM students WHERE stu_id = ?)
+							AND name = (SELECT class FROM students WHERE stu_id = ?)
+						)
 GROUP BY lesson_id
 `
-	err := extension.DB.Raw(sql, stuID).Scan(&result).Error
+	err := extension.DB.Raw(sql, stuID, stuID, stuID).Scan(&result).Error
 	if err != nil {
 		return nil, err
 	}
