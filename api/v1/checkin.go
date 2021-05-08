@@ -46,7 +46,7 @@ func StudentCheckin(c *gin.Context) {
 
 func GetCheckinAmount(c *gin.Context) {
 	service := &checkin.GetCheckinAmountService{}
-	grade := c.Query("grade")
+	grade := c.Param("grade")
 	total, err := service.GetCheckinAmount(grade)
 	if err != nil {
 		c.JSON(200, utils.ResponseWithError(utils.ERROR, err))
@@ -54,7 +54,7 @@ func GetCheckinAmount(c *gin.Context) {
 		return
 	}
 	c.JSON(200, common.Response{
-		Status: utils.ERROR,
+		Status: utils.SUCCESS,
 		Data:   total,
 		Msg:    "",
 		Error:  "",

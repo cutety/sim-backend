@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"sim-backend/extension"
 	"time"
 )
@@ -31,9 +32,22 @@ func (c *CheckinInfo) UpdateCheckinInfo(checkinInfo *CheckinInfo) error {
 }
 
 func (c *CheckinInfo) GetCheckinAmountByGrade(grade string) (int64, error) {
-	var total int64
-	err := extension.DB.Table(c.TableName()).Where("stu_id like ? and checkin_status = 1 and grade = ?", grade).Count(&total).Error
-	return total, err
+	var result []int64
+	sql := `
+		SELECT 
+			COUNT(*) AS amount
+		FROM 
+			checkin_info c
+		LEFT JOIN 
+			students s
+			ON s.stu_id = c.stu_id
+		WHERE 
+			s.grade = ?
+			AND c.checkin_status = 1
+`
+	err := extension.DB.Raw(sql, grade).Pluck("amount", &result).Error
+	fmt.Println(result)
+	return result[0], err
 }
 
 type CheckinTable struct {
