@@ -5,12 +5,12 @@ const (
 	NOT_MATCHED = 0
 )
 
-type LoginResponse struct {
-	Status int `json:"status"`
-	Msg string `json:"msg"`
-	Error string `json:"error"`
-	Token string `json:"token"`
-}
+//type LoginResponse struct {
+//	Status int `json:"status"`
+//	Msg string `json:"msg"`
+//	Error string `json:"error"`
+//	Token string `json:"token"`
+//}
 
 type Response struct {
 	Status int `json:"status" example:"10001"`
@@ -28,4 +28,9 @@ type Pagination struct {
 	Page int `json:"page"`
 	Limit int `json:"limit"`
 	Order string `json:"order"`
+}
+
+type NameAndValue struct {
+	Name string `json:"name"`
+	Value string `json:"value"`
 }

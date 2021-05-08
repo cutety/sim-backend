@@ -29,9 +29,12 @@ func (service *LoginService) Login() common.Response {
 			Error:  response.Error,
 		}
 	} else {
+		info := make(map[string]interface{})
+		info["token"] = token
+		info["role"] = user.Role
 		return common.Response{
-			Status: user.Role,
-			Data:   token,
+			Status: response.Status,
+			Data:   info,
 			Msg:    response.Msg,
 			Error:  response.Error,
 		}

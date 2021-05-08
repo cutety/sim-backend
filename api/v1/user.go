@@ -157,3 +157,9 @@ func GetAdmittedAndNotAdmittedAmount(c *gin.Context) {
 	applicationValues, err := service.GetAdmittedAndNotAdmittedAmount(grade)
 	c.JSON(200, utils.ResponseAll(applicationValues, err))
 }
+
+func GetAdmittedTendency(c *gin.Context) {
+	service := &user.GetAdmittedTendencyService{}
+	result, err := service.GetAdmittedTendency()
+	c.JSON(200, utils.ResponseAll(result, err))
+}

@@ -102,6 +102,7 @@ func InitRouter() {
 		router.GET("class/list", v1.ListClassByGrade)
 		router.GET("course/list", v1.ListCourses)
 		router.GET("visual/admitted", v1.GetAdmittedAndNotAdmittedAmount)
+		router.GET("visual/admitted/tendency", v1.GetAdmittedTendency)
 	}
 
 

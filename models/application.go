@@ -193,3 +193,21 @@ func (*Application) GetAdmittedAndNotAdmittedAmount(grade string) (*ApplicationV
 	}
 	return result, err
 }
+
+func (*Application) GetAdmittedTendency() ([]common.NameAndValue, error) {
+	var result []common.NameAndValue
+	sql := `
+			SELECT 
+				s.grade AS name,
+				COUNT(*) AS value
+			FROM 
+			application a
+			LEFT JOIN 
+				students s
+				ON s.stu_id = a.user_id
+			WHERE a.is_admitted = 1
+			GROUP BY name
+`
+	err := extension.DB.Raw(sql).Scan(&result).Error
+	return result, err
+}
