@@ -16,6 +16,7 @@ const (
 	ERROR_USER_EXIST       = 1007
 	ERROR_PASSWORD_MATCH = 1008
 	ERROR_APPLICATION_EXIST = 1009
+	ERROR_DELETE_ERROR_USER_ID_EXIST = 10010
 
 )
 
@@ -32,6 +33,7 @@ var errorMsgMap = map[int]string{
 	ERROR_PASSWORD_MATCH:"原密码不正确",
 	ERROR_APPLICATION_EXIST:"志愿信息未填报",
 	DUPLICATE_ENTRY_ERROR  :"重复导入，请检查学工号是否冲突",
+	ERROR_DELETE_ERROR_USER_ID_EXIST : "删除错误，用户ID不存在或为空",
 
 }
 

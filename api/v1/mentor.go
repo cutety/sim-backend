@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"sim-backend/models/common"
 	"sim-backend/service/mentor"
@@ -136,4 +137,18 @@ func ChooseStudent(c *gin.Context) {
 	service := mentor.ChooseStudentService{}
 	response := service.ChooseStudent(userID, mentorUserID, status)
 	c.JSON(200, response)
+}
+
+
+// DeleteMentorByID 删除导师
+func DeleteMentorByID(c *gin.Context) {
+	userID := c.Query("mentor_id")
+	if userID == "" {
+		c.JSON(200, utils.ResponseAll(nil , errors.New(utils.GetErrMsg(utils.ERROR_DELETE_ERROR_USER_ID_EXIST))))
+		c.Abort()
+		return
+	}
+	service := mentor.DeleteMentorByIDService{}
+	err := service.DeleteMentorByID(userID)
+	c.JSON(200, utils.ResponseAll(nil, err))
 }

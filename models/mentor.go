@@ -136,6 +136,7 @@ func (*Mentor) ListMentors(pagination *common.Pagination) ([]Mentor, int64, erro
 	var apps []Mentor
 	var total int64
 	err := extension.DB.
+		Where("deleted_at IS NULL").
 		Limit(pagination.Limit).
 		Offset((pagination.Page - 1) * pagination.Limit).
 		Find(&apps).Error
@@ -154,4 +155,10 @@ func (*Mentor) ListAllMentors() ([]Mentor, int64, error) {
 
 func (*Mentor) UpdateMentorByUserID(userID string, info *Mentor) error {
 	return extension.DB.Model(&info).Where("user_id = ?", userID).Updates(&info).Error
+}
+
+// DeleteMentorByID 删除导师
+func (*Mentor) DeleteMentorByID(userID string) error {
+	var mentor Mentor
+	return extension.DB.Where("user_id = ?", userID).Delete(&mentor).Error
 }

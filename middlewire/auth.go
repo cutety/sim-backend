@@ -11,7 +11,7 @@ const (
 	ROLE_STUDENT = 2
 	ROLE_TEACHER = 3
 )
-
+// 1 2 3 管理员 2 学生 3 2 教师
 var tokenRole = [][]int{{1,2,3}, {2}, {2,3}}
 
 func AuthRole(role int) gin.HandlerFunc {

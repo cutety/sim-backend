@@ -78,6 +78,7 @@ func InitRouter() {
 		admin.GET("admin", v1.GetUserByUserID)
 		admin.GET("admin/batch/mentor", v1.BatchAddMentor)
 		admin.GET("admin/list/mentor", v1.ListMentors)
+		admin.DELETE("admin/delete/mentor", v1.DeleteMentorByID)
 	}
 	// 无需权限
 	router := r.Group("api/v1")
