@@ -6,11 +6,17 @@ import (
 	"sim-backend/utils"
 )
 
-type ChooseMentorService struct{
-
+type ChooseMentorService struct {
 }
 
 func (*ChooseMentorService) ChooseMentor(userID, mentorUserID string) common.Response {
+	mentor, err := models.MMentor.GetByMentorID(mentorUserID)
+	if err != nil {
+		return utils.ResponseWithError(utils.ErrorNoMentorFound, err)
+	}
+	if mentor.EnableNotify {
+		// send notification.
+	}
 	app, err := models.MApplication.GetByUserID(userID)
 	if err != nil {
 		return utils.ResponseWithError(utils.ERROR, err)

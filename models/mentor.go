@@ -1,10 +1,12 @@
 package models
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
+
 	"sim-backend/extension"
 	"sim-backend/models/common"
-	"time"
 )
 
 var MMentor Mentor
@@ -29,6 +31,7 @@ type Mentor struct {
 	GraduateMajor           string     `gorm:"column:graduate_major;type:varchar(255)" json:"graduate_major"`
 	PHDSchool               string     `gorm:"phd_school;type:varchar(255)" json:"phd_school"`
 	PHDMajor                string     `gorm:"phd_major;type:varchar(255)" json:"phd_major"`
+	EnableNotify            bool       `gorm:"enable_notify" json:"enable_notify"`
 }
 
 func (*Mentor) TableName() string {
@@ -69,13 +72,13 @@ type MentorMatchingResult struct {
 	AdmissionSchool   string  `gorm:"column:admission_school;type:varchar(255)" json:"admission_school" validate:"required" label:"录取院校"`
 	AdmissionMajor    string  `gorm:"column:admission_major;type:varchar(255)" json:"admission_major" validate:"required" label:"录取院校"`
 	IsAdmitted        bool    `gorm:"column:is_admitted;type:tinyint(1)" json:"is_admitted" label:"录取结果"`
-	Note string `gorm:"column:note;" json:"note" label:"留言"`
+	Note              string  `gorm:"column:note;" json:"note" label:"留言"`
 }
 
 func (*Mentor) GetMatchingResult(pagination *common.Pagination, userID string) ([]MentorMatchingResult, int64, error) {
 	var result []MentorMatchingResult
 	var total int64
-	sql:=`
+	sql := `
 		SELECT 
 			s.stu_name, s.gender, s.grade, s.admission_major as major, s.phone as phone, s.email as email, s.wechat as wechat, s.qq as qq, 
 			a.user_id, a.apply_school, a.mentor_user_id, a.apply_school, a.apply_major, a.preliminary_result, a.retrail_result, a.admission_school, a.admission_major, a.is_admitted
